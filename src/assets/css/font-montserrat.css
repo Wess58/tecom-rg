@@ -1,0 +1,23 @@
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 400;
+  src: url(../fonts/montserrat/Montserrat-normal-400);
+  src: local('Montserrat'), url(../fonts/montserrat/Montserrat-normal-400.woff) format('woff'), url(../fonts/montserrat/Montserrat-normal-400.woff2) format('woff2'), url(../fonts/montserrat/Montserrat-normal-400.ttf) format('truetype'), url(../fonts/montserrat/Montserrat-normal-400.svg#Montserrat) format('svg'), url(../fonts/montserrat/Montserrat-normal-400?#iefix) format('embedded-opentype');
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 500;
+  src: url(../fonts/montserrat/Montserrat-normal-500);
+  src: local('Montserrat'), url(../fonts/montserrat/Montserrat-normal-500.woff2) format('woff2'), url(../fonts/montserrat/Montserrat-normal-500?#iefix) format('embedded-opentype'), url(../fonts/montserrat/Montserrat-normal-500.ttf) format('truetype'), url(../fonts/montserrat/Montserrat-normal-500.svg#Montserrat) format('svg'), url(../fonts/montserrat/Montserrat-normal-500.woff) format('woff');
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 600;
+  src: url(../fonts/montserrat/Montserrat-normal-600.woff) format('woff'), url(../fonts/montserrat/Montserrat-normal-600.woff2) format('woff2'), url(../fonts/montserrat/Montserrat-normal-600.ttf) format('truetype');
+}
+

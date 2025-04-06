@@ -1,0 +1,350 @@
+<div class="container">
+	<div class="row justify-content-center">
+		<div class="col-md-10">
+			<div class="title">Tecom Advance Report Generator</div>
+
+			<form class="form" autocomplete="new-password">
+				<div class="section">
+
+					<span class="section-title">
+						Client information
+					</span>
+
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>Report date</label>
+								<input type="date" class="form-control" name="date" [(ngModel)]="reportData.date">
+							</div>
+						</div>
+
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>Client name</label>
+								<input type="text" class="form-control" name="uname" [(ngModel)]="reportData.name"
+									autocomplete="new-password">
+							</div>
+						</div>
+
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>Client phone number</label>
+								<input type="text" class="form-control" name="uphone" [(ngModel)]="reportData.phone"
+									autocomplete="new-password"
+									oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');" />
+
+							</div>
+						</div>
+
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>Client email</label>
+								<input type="text" class="form-control" name="uemail" id="uemail"
+									[(ngModel)]="reportData.email" (ngModelChange)="emailInvalid = false"
+									(ngModelDebounceChange)="validateEmail()" autocomplete="new-password">
+							</div>
+						</div>
+
+					</div>
+				</div>
+
+
+				<div class="section">
+					<span class="section-title">
+						Item information
+					</span>
+
+					<div class="row">
+						<div class="col-md-4">
+							<div class="form-group">
+								<label>Device type</label>
+								<select class="form-control" name="deviceType" [(ngModel)]="reportData.deviceType">
+									<option value="PHONE">Phone</option>
+								</select>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="form-group">
+								<label>Brand & Model </label>
+								<input type="text" class="form-control" name="brand" [(ngModel)]="reportData.brand"
+									autocomplete="off">
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="form-group">
+								<label>Serial No / IMEI </label>
+								<input type="text" class="form-control" name="imei" [(ngModel)]="reportData.imei"
+									autocomplete="off">
+							</div>
+						</div>
+
+						<div class="col-12">
+							<div class="form-group">
+								<label>Received accessories</label>
+								<textarea class="form-control" name="accessories" [(ngModel)]="reportData.accessories"
+									maxlength="200" rows="3"></textarea>
+								<div class="text-end pt-1 pe-2">
+									<small class="text-muted fw-bold"> <span
+											[ngClass]="{'red-text':reportData.accessories?.length > 150}">
+											{{reportData.accessories?.length ?? '0'}} </span> / 150 </small>
+								</div>
+							</div>
+						</div>
+					</div>
+
+
+				</div>
+
+				<div class="section">
+					<span class="section-title">
+						Issue & Diagnosis information
+					</span>
+
+					<div class="row">
+						<div class="col-md-4">
+							<div class="form-group">
+								<label>Reported issue</label>
+								<select class="form-control" name="reportedIssue"
+									[(ngModel)]="reportData.reportedIssue">
+									<option value="WATER">Water</option>
+								</select>
+							</div>
+						</div>
+
+						<div class="col-12">
+							<div class="form-group">
+								<label>Diagnosis summary</label>
+								<textarea class="form-control" name="diagnosisSummary"
+									[(ngModel)]="reportData.diagnosisSummary" maxlength="200" rows="3"></textarea>
+								<div class="text-end pt-1 pe-2">
+									<small class="text-muted fw-bold"> <span
+											[ngClass]="{'red-text':reportData.diagnosisSummary?.length > 250}">
+											{{reportData.diagnosisSummary?.length ?? '0'}} </span> / 250 </small>
+								</div>
+
+
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+				<div class="section">
+					<span class="section-title">
+						Repair recommendation
+					</span>
+
+					<div class="row">
+						<div class="col-12">
+							<div class="form-group">
+								<label>Recommended fix</label>
+								<textarea class="form-control" name="fix" [(ngModel)]="reportData.fix"
+									rows="3"></textarea>
+
+								<div class="text-end pt-1 pe-2">
+									<small class="text-muted fw-bold"> <span
+											[ngClass]="{'red-text':reportData.fix?.length > 250}">
+											{{reportData.fix?.length ?? '0'}} </span> / 250 </small>
+								</div>
+							</div>
+
+						</div>
+
+
+						<div class="col-md-4">
+							<div class="form-group">
+								<label>Estimated repair cost</label>
+								<div class="shared-form-group">
+									<select class="form-control" name="currency" [(ngModel)]="reportData.currency">
+										<option [value]="currency" *ngFor="let currency of currencyOptions;index as i">
+											{{currency}} </option>
+									</select>
+									<input type="text" class="form-control" name="amount" pattern="[0-9]*"
+										inputmode="numeric"
+										[value]="reportData.amount | currency : ' ' : 'symbol' : '1.0-0'"
+										[(ngModel)]="reportData.amount" autocomplete="off"
+										oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');" />
+								</div>
+
+							</div>
+						</div>
+
+
+						<div class="col-md-4">
+							<div class="form-group">
+								<label>Estimated repair time </label>
+								<input type="text" class="form-control" name="repairTime"
+									[(ngModel)]="reportData.repairTime" placeholder="Eg : 2 days , 30 mins "
+									autocomplete="off">
+							</div>
+						</div>
+
+						<div class="col-md-5">
+							<div class="form-group">
+								<label>Has the customer approved this repair ? </label>
+								<div class="row mt-2">
+									<div class="col-12 col-md-3" *ngFor="let method of approvalOptions;index as i">
+										<div class="form-group d-flex align-items-center radio-form-group"
+											(click)="selectMethod(method)">
+											<input type="radio" [name]="'method-'+i"
+												[checked]="reportData.customerApproval === method">
+											<span class="form-check-title">{{method}}</span>
+										</div>
+									</div>
+								</div>
+							</div>
+
+						</div>
+
+					</div>
+				</div>
+
+
+				<div class="section">
+
+					<div class="d-flex justify-content-between mb-3">
+						<span class="section-title mb-0"> Attach images
+						</span>
+						<button type="button" class="btn btn-add-images" (click)="openUploadDialog()"> Upload photos
+						</button>
+					</div>
+
+
+					<div class="wrap" hidden>
+						<div class="col-md-2">
+							<input type="file" class="custom-file-input" (change)="onFileChange($event)"
+								accept=".png, .jpg, .jpeg" multiple id="uploadfile" name="file" />
+							<!-- <label class="custom-file-label" for="uploadFile"></label> -->
+						</div>
+					</div>
+
+
+					<div *ngIf="selectedFiles?.length" class="image-listing" [@fadeIn]>
+						<div class="mb-3" *ngFor="let image of selectedFiles; let i = index">
+							<div class="image-item" *ngIf="!image.documentType" data-bs-toggle="modal"
+								data-bs-target="#viewImageModal" (click)="selectImage(image)">
+								<img class="d-block w-100" src="{{ image.image }}" alt="Image" />
+							</div>
+							<div class="position-relative" *ngIf="!image.documentType">
+								<span class="trash-icon" data-bs-toggle="modal" data-bs-target="#deleteItemModal"
+									(click)="selectImage(image)" title="Remove image">
+									<i class="fa-solid fa-trash-alt"></i>
+								</span>
+							</div>
+						</div>
+					</div>
+
+
+				</div>
+
+
+				<div class="section">
+					<span class="section-title">
+						Technician information
+					</span>
+
+					<div class="row">
+
+						<div class="col-md-4">
+							<div class="form-group">
+								<label>Technician name</label>
+								<input type="text" class="form-control" name="techName"
+									[(ngModel)]="reportData.techName" autocomplete="new-password">
+							</div>
+						</div>
+
+						<div class="col-md-4">
+							<div class="form-group">
+								<label>Estimated repair cost</label>
+								<div class="shared-form-group">
+									<select class="form-control" name="currency" [(ngModel)]="reportData.repairCurrency">
+										<option [value]="currency" *ngFor="let currency of currencyOptions;index as i">
+											{{currency}} </option>
+									</select>
+									<input type="text" class="form-control" name="amount" pattern="[0-9]*" inputmode="numeric"
+										[value]="reportData.repairAmount | currency : ' ' : 'symbol' : '1.0-0'" [(ngModel)]="reportData.repairAmount"
+										autocomplete="off"
+										oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');" />
+								</div>
+						
+							</div>
+						</div>
+
+					</div>
+				</div>
+
+
+
+
+				<div class="text-end">
+					<button class="btn btn-generate"
+						[disabled]="emailInvalid || !reportData.name || !reportData.phone || !reportData.email || !reportData.brand || !reportData.imei || !reportData.accessories || !reportData.reportedIssue || !reportData.diagnosisSummary || !reportData.fix ||      !reportData.amount || !reportData.repairTime"
+						(click)="generateReport()"> Generate report
+					</button>
+
+				</div>
+
+
+			</form>
+
+		</div>
+	</div>
+</div>
+
+
+
+<!-- <div id="content" style="background-color: red;border: 2px solid #000;border-radius: 20px;" hidden>
+	<h3 class="d-block mb-5" style="font-size: 12px;">THis is the heading </h3>
+	<p style="border-bottom: 2px solid #000;">the next thing now is now ging to be very long coz I wan to see where the
+		whting ibe inf full jbsc ds c</p>
+
+	<div class="d-flex justify-content-between">
+		<div>
+			<span class="d-block">{{reportData.techName}}</span>
+			<span class="d-block">254792553595</span>
+			<span class="d-block">tecomadvance9gmail</span>
+		</div>
+
+		<div class="text-end">
+			<span class="d-block">{{reportData.name}} </span>
+			<span class="d-block">{{reportData.phone}} </span>
+			<span class="d-block">{{reportData.email}} </span>
+		</div>
+	</div>
+
+</div> -->
+
+
+<div class="modal fade" id="viewImageModal" tabindex="-1" aria-labelledby="viewImageModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-body">
+				<img [src]="selectedImage?.image" alt="Larger Image" />
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- delete item Modal -->
+<div class="modal fade" id="deleteItemModal" tabindex="-1" aria-labelledby="definitionsModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h1 class="modal-title fs-5" id="exampleModalLabel">Remove image</h1>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<p>Are you sure you want to <strong>delete</strong> this image</p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-delete" data-bs-dismiss="modal"
+					(click)="removeImage()">Delete</button>
+
+			</div>
+		</div>
+	</div>
+</div>

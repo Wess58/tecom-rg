@@ -1,1 +1,188 @@
 /* You can add global styles to this file, and also import other style files */
+@import "./assets/css/font-montserrat.css";
+@import "../node_modules/@fortawesome/fontawesome-free/css/all.min.css";
+// DEV
+// ng build --base-href https://wess58.github.io/tecom-rg/ --output-path docs/ && mv docs/browser/* docs/ && rm -rf docs/browser && git add . && git commit -m "docs ready for deployment" && git push
+// PROD
+// ng build &&  mv dist/browser/* dist/ && rm -rf dist/browser
+
+:root {
+  --app-blue: #13d0d5;
+  --app-gold: #ffd6b3;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Montserrat", sans-serif;
+  letter-spacing: 1px;
+  scroll-behavior: smooth !important;
+  overflow-x: hidden !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #f8f9fa;
+  min-height: 100vh;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 1px;
+  color: #5f6063;
+}
+
+* a,
+* button,
+* input,
+* select,
+* textarea {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+* img {
+  user-drag: none !important;
+  user-select: none !important;
+  -moz-user-select: none !important;
+  -webkit-user-drag: none !important;
+  -webkit-user-select: none !important;
+  -ms-user-select: none !important;
+}
+
+input,
+select,
+textarea {
+  border-radius: 24px !important;
+  border: 2px solid #e1e1e1 !important;
+  outline: none !important;
+  box-shadow: none !important;
+  background-clip: padding-box !important;
+  color: #5f6063 !important;
+  padding: 10px 12px !important;
+}
+
+input:active,
+input:focus,
+input:hover,
+select:active,
+select:focus,
+select:hover,
+textarea:active,
+textarea:focus,
+textarea:hover {
+  border: 2px solid #5f6063 !important;
+}
+
+* select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
+  background-repeat: no-repeat;
+  background-position-x: 98%;
+  background-position-y: 40%;
+  cursor: pointer;
+}
+
+* label {
+  color: #5f6063;
+  font-weight: 500;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+  display: block;
+  margin-bottom: 5px;
+  margin-left: 5px;
+}
+
+::placeholder {
+  /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: #80868b99 !important;
+  opacity: 1;
+  /* Firefox */
+}
+
+:-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
+  color: #80868b99 !important;
+}
+
+::-ms-input-placeholder {
+  /* Microsoft Edge */
+  color: #80868b99 !important;
+}
+
+.red-text {
+  color: #d11a2a !important;
+}
+
+.green-text {
+  color: #36a636 !important;
+}
+
+.red-border-input {
+  border: 2px solid #d11a2a !important;
+
+  &:active,
+  &:focus,
+  &:hover {
+    border: 2px solid #d11a2a !important;
+  }
+}
+
+.cursor-pointer {
+  cursor: pointer !important;
+}
+
+.container-fluid {
+  padding: 0;
+}
+
+.modal {
+  backdrop-filter: blur(2px);
+  padding: 0 !important;
+
+  .modal-content {
+    border-radius: 12px;
+  }
+}
+
+.modal-header {
+  //   padding: 16px 30px;
+
+  .modal-title {
+    color: #3c4043;
+    font-weight: 600;
+  }
+}
+
+.modal-footer {
+  padding: 16px 25px;
+
+  .btn {
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding: 5px 15px;
+    letter-spacing: 0.5px;
+    min-width: 80px;
+  }
+
+  .btn-cancel {
+    background-color: transparent;
+    color: #5f6063;
+    margin-right: 20px;
+    border: 1px solid #e1e1e1;
+  }
+
+  .btn-submit-secondary {
+    background-color: #e1e1e1;
+    color: #3c4043;
+    margin-right: 20px;
+  }
+
+  .btn-submit {
+    background-color: #0f1786;
+    color: #fff;
+  }
+
+  .btn-delete {
+    background-color: #d11a2a;
+    color: #fff;
+  }
+}
