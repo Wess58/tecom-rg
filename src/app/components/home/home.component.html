@@ -1,7 +1,7 @@
 <div class="container">
 	<div class="row justify-content-center">
 		<div class="col-md-10">
-			<div class="title">Tecom Advance Report Generator</div>
+			<div class="platform-title">Tecom Advance Report Generator</div>
 
 			<form class="form" autocomplete="new-password">
 				<div class="section">
@@ -205,7 +205,8 @@
 					<div class="d-flex justify-content-between mb-3">
 						<span class="section-title mb-0"> Attach images
 						</span>
-						<button type="button" class="btn btn-add-images" (click)="openUploadDialog()"> Upload photos
+						<button type="button" class="btn btn-add-images" (click)="openUploadDialog()"
+						[disabled]="selectedFiles?.length === 2"> Upload images
 						</button>
 					</div>
 
@@ -216,6 +217,13 @@
 								accept=".png, .jpg, .jpeg" multiple id="uploadfile" name="file" />
 							<!-- <label class="custom-file-label" for="uploadFile"></label> -->
 						</div>
+					</div>
+
+
+					<div class="text-center">
+						<small class="text-muted d-block mt-4 mb-2">
+							Click the <strong><i> Upload images </i></strong> button to select up to <strong>2 images</strong> to be used as attached references. 
+						</small> 
 					</div>
 
 
