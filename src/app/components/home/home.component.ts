@@ -194,9 +194,9 @@ export class HomeComponent implements OnInit {
       // }); 
 
       // FONT INJECTION 
-      doc.addFont("../../../assets/fonts/montserrat/Montserrat-normal-400.ttf", "Montserrat", "normal");
-      doc.addFont("../../../assets/fonts/montserrat/Montserrat-normal-500.ttf", "Montserrat", "bold");
-      doc.addFont("../../../assets/fonts/montserrat/Montserrat-normal-600.ttf", "Montserrat", "bolder");
+      doc.addFont("assets/fonts/montserrat/Montserrat-normal-400.ttf", "Montserrat", "normal");
+      doc.addFont("assets/fonts/montserrat/Montserrat-normal-500.ttf", "Montserrat", "bold");
+      doc.addFont("assets/fonts/montserrat/Montserrat-normal-600.ttf", "Montserrat", "bolder");
       doc.setFont("Montserrat");
 
 
