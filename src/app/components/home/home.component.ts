@@ -38,7 +38,7 @@ export class HomeComponent implements OnInit {
   selectedFiles: any = [];
   selectedImage: any;
   imgPositions = [[15, 215], [110, 215], [15, 10], [110, 10]]; // x , y image placement coordinates
-  deviceTypes: string[] = ['Phone', 'Laptop', 'CPU', 'Monitor', 'Rougher', 'Switch', 'Printer', 'UPS'];
+  deviceTypes: string[] = ['Phone', 'Laptop', 'CPU', 'Monitor', 'Router', 'Switch', 'Printer', 'UPS'];
   issueTypes: string[] = ['Water Spill', 'Impaired', 'Malfunctioning', 'Dead', 'Unresponsive', 'Bricked', 'Crashed', 'Power failure'];
   technicians: any = [
     {
@@ -78,10 +78,6 @@ export class HomeComponent implements OnInit {
 
   selectMethod(approval: string): void {
     this.reportData.customerApproval = approval;
-  }
-
-  selectTechnician(): void {
-    this.reportData.tech
   }
 
 
