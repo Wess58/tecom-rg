@@ -37,6 +37,7 @@
         border-radius: 20px;
         cursor: pointer;
         transition: all 0.2s;
+        width: max-content;
 
         &:hover {
           background-color: #f1f1f1;
@@ -63,6 +64,16 @@
         }
         input {
           border-radius: 0 20px 20px 0 !important;
+        }
+      }
+
+      .shared-form-group-inversed {
+        select {
+          width: 50%;
+          border-radius: 0 20px 20px 0 !important;
+        }
+        input {
+          border-radius: 20px 0 0 20px !important;
         }
       }
     }
@@ -174,8 +185,8 @@
   }
   .image-listing {
     .image-item {
-      width: auto!important;
-      height: 120px!important;
+      width: auto !important;
+      height: 120px !important;
       object-fit: cover;
       margin-right: 20px;
       border-radius: 8px;

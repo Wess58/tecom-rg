@@ -27,7 +27,10 @@ export class HomeComponent implements OnInit {
     date: moment().format('YYYY-MM-DD'),
     customerApproval: 'NO',
     currency: 'KES',
-    repairCurrency: 'KES'
+    repairCurrency: 'KES',
+    deviceType: 'Phone',
+    reportedIssue: 'Water Spill',
+    repairTimeUnit: 'days'
   };
   emailInvalid = false;
   approvalOptions: string[] = ['YES', 'NO', 'WAITING'];
@@ -35,6 +38,24 @@ export class HomeComponent implements OnInit {
   selectedFiles: any = [];
   selectedImage: any;
   imgPositions = [[15, 215], [110, 215], [15, 10], [110, 10]]; // x , y image placement coordinates
+  deviceTypes: string[] = ['Phone', 'Laptop', 'CPU', 'Monitor', 'Rougher', 'Switch', 'Printer', 'UPS'];
+  issueTypes: string[] = ['Water Spill', 'Impaired', 'Malfunctioning', 'Dead', 'Unresponsive', 'Bricked', 'Crashed', 'Power failure'];
+  technicians: any = [
+    {
+      title: 'Electronics & ICT Diagnostic Engineer',
+      name: 'Isaac K.N',
+      email: 'support@tecomadvance.com',
+      id: 1
+    },
+    {
+      title: 'Technical Support Engineer',
+      name: 'Kennedy M.K',
+      email: 'kennedy@tecomadvance.com',
+      id: 2
+    }
+  ];
+  repairTimeUnits: string[] = ['mins', 'hours', 'days', 'weeks', 'months', 'years'];
+
 
   constructor(
     public activatedRoute: ActivatedRoute,
@@ -44,6 +65,9 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     window.scroll(0, 0);
     // this.reportData = JSON.parse(localStorage.getItem('rptjson') ?? '{}');
+    this.reportData.tech = JSON.parse(localStorage.getItem('techId') ?? '1');
+    // console.log(this.reportData);
+
   }
 
   validateEmail(): void {
@@ -54,6 +78,10 @@ export class HomeComponent implements OnInit {
 
   selectMethod(approval: string): void {
     this.reportData.customerApproval = approval;
+  }
+
+  selectTechnician(): void {
+    this.reportData.tech
   }
 
 
@@ -176,6 +204,7 @@ export class HomeComponent implements OnInit {
   generateReport(): void {
 
     // localStorage.setItem('rptjson', JSON.stringify(this.reportData));
+    localStorage.setItem('techId', JSON.stringify(this.reportData.techId));
 
     setTimeout(() => {
       let doc: any = new jsPDF();
@@ -236,19 +265,21 @@ export class HomeComponent implements OnInit {
       doc.setTextColor('#5f6063');
       doc.text('REPORT BY', 5, 28, { align: 'left' });
 
+      const tech = this.technicians.find((tech: any) => +this.reportData.tech === tech.id);
+
       doc.setTextColor('#3c4043');
       doc.setFont("Montserrat", 'bold');
       doc.setFontSize(9);
-      doc.text('Electronics & ICT Diagnostic Engineer', 5, 34.5, { align: 'left' });
+      doc.text(tech.title, 5, 34.5, { align: 'left' });
       doc.setFont("Montserrat", 'bolder');
       doc.setFontSize(12);
-      doc.text(this.reportData.techName.toUpperCase(), 5, 40, { align: 'left' });
+      doc.text(tech.name.toUpperCase(), 5, 40, { align: 'left' });
 
       doc.setFont("Montserrat", 'normal');
       doc.setFontSize(9);
       doc.setTextColor('#5f6063');
       doc.text('254792553595', 5, 45, { align: 'left' });
-      doc.text('support@tecomadvance.com', 5, 50, { align: 'left' });
+      doc.text(tech.email, 5, 50, { align: 'left' });
 
 
       // *********** END OF REPORT BY ***********
@@ -371,14 +402,14 @@ export class HomeComponent implements OnInit {
       doc.setFontSize(10);
       doc.setTextColor('#5f6063');
       doc.text(this.reportData.fix.slice(0, 250)?.trim(), 9, 179, { align: 'left', maxWidth: 190 });
-      doc.text(this.reportData.repairTime, 9, 197, { align: 'left' });
+      doc.text(this.reportData.repairTime + ' ' + this.reportData.repairTimeUnit, 9, 197, { align: 'left' });
       doc.text(this.reportData.customerApproval, 150, 197, { align: 'left' });
-      
+
       doc.setFont("Montserrat", 'bolder');
       doc.setTextColor('#3c4043');
       doc.setFontSize(11);
       doc.text(this.reportData.currency + ' ' + (String(this.reportData.amount).replace(/\B(?=(\d{3})+(?!\d))/g, ',') ?? '0'), 80, 197, { align: 'left' });
-     
+
 
 
 
@@ -449,7 +480,7 @@ export class HomeComponent implements OnInit {
 
       doc.setFont("Montserrat", 'normal');
       doc.setFontSize(11);
-      doc.text('Diagnosis / Repair attempt fee charged is :', 9, (hasImages ? 33 : 225), { align: 'left', maxWidth:80 });
+      doc.text('Diagnosis / Repair attempt fee charged is :', 9, (hasImages ? 33 : 225), { align: 'left', maxWidth: 80 });
       doc.setFont("Montserrat", 'bolder');
       doc.setFontSize(12);
       doc.text(this.reportData.repairCurrency + ' ' + (String(this.reportData.repairAmount).replace(/\B(?=(\d{3})+(?!\d))/g, ',') ?? '0'), 15, (hasImages ? 38 : 230), { align: 'left' });
@@ -479,7 +510,7 @@ export class HomeComponent implements OnInit {
       doc.text('All Accounts Payable to :', 200, (hasImages ? 33 : 225), { align: 'right' });
       doc.text('Buy Goods And Services', 200, (hasImages ? 43 : 235), { align: 'right' });
       doc.text('Till Number', 200, (hasImages ? 48 : 240), { align: 'right' });
-    
+
       doc.setFont("Montserrat", 'bolder');
       doc.text('TECOM ADVANCE', 200, (hasImages ? 38 : 230), { align: 'right' });
       doc.text('8546892', 200, (hasImages ? 53 : 245), { align: 'right' });
