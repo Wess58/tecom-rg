@@ -304,7 +304,7 @@
 
 				<div class="text-end">
 					<button class="btn btn-generate"
-						[disabled]="emailInvalid || !reportData.name || !reportData.phone || !reportData.email || !reportData.brand || !reportData.imei || !reportData.accessories || !reportData.reportedIssue || !reportData.diagnosisSummary || !reportData.fix ||      !reportData.amount || !reportData.repairTime"
+						[disabled]="emailInvalid"
 						(click)="generateReport()"> Generate report
 					</button>
 
