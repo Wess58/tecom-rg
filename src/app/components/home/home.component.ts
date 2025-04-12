@@ -65,7 +65,7 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     window.scroll(0, 0);
     // this.reportData = JSON.parse(localStorage.getItem('rptjson') ?? '{}');
-    this.reportData.tech = JSON.parse(localStorage.getItem('techId') ?? '1');
+    this.reportData.tech = JSON.parse(localStorage?.getItem('techId') ?? '1');
     // console.log(this.reportData);
 
   }
@@ -200,7 +200,7 @@ export class HomeComponent implements OnInit {
   generateReport(): void {
 
     // localStorage.setItem('rptjson', JSON.stringify(this.reportData?));
-    localStorage.setItem('techId', JSON.stringify(this.reportData?.techId));
+    localStorage.setItem('techId', JSON.stringify(this.reportData?.tech));
 
     setTimeout(() => {
       let doc: any = new jsPDF();
