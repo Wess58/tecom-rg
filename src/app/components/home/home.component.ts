@@ -72,7 +72,7 @@ export class HomeComponent implements OnInit {
 
   validateEmail(): void {
     // console.log(!(/\S+@\S+\.\S+/).test(this.user.email.trim()));
-    this.emailInvalid = this.reportData.email && !(/\S+@\S+\.\S+/).test(this.reportData.email);
+    // this.emailInvalid = this.reportData.email && !(/\S+@\S+\.\S+/).test(this.reportData.email);
   }
 
 
