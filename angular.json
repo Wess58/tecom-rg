@@ -46,6 +46,8 @@
           },
           "configurations": {
             "production": {
+              "optimization": true,
+              "outputHashing": "all",
               "budgets": [
                 {
                   "type": "initial",
@@ -58,7 +60,6 @@
                   "maximumError": "2MB"
                 }
               ],
-              "outputHashing": "all"
             },
             "development": {
               "optimization": false,

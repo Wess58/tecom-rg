@@ -263,21 +263,21 @@ export class HomeComponent implements OnInit {
       doc.setTextColor('#5f6063');
       doc.text('REPORT BY', 5, 28, { align: 'left' });
 
-      const tech = this.technicians.find((tech: any) => +this.reportData?.tech === tech.id);
+      const tech = this.technicians.find((tech: any) => +this.reportData?.tech === tech?.id);
 
       doc.setTextColor('#3c4043');
       doc.setFont("Montserrat", 'bold');
       doc.setFontSize(9);
-      doc.text(tech.title, 5, 34.5, { align: 'left' });
+      doc.text(tech?.title ?? 'N/A', 5, 34.5, { align: 'left' });
       doc.setFont("Montserrat", 'bolder');
       doc.setFontSize(12);
-      doc.text(tech.name.toUpperCase(), 5, 40, { align: 'left' });
+      doc.text(tech?.name?.toUpperCase() ?? 'N/A', 5, 40, { align: 'left' });
 
       doc.setFont("Montserrat", 'normal');
       doc.setFontSize(9);
       doc.setTextColor('#5f6063');
       doc.text('254792553595', 5, 45, { align: 'left' });
-      doc.text(tech.email, 5, 50, { align: 'left' });
+      doc.text(tech?.email ?? 'N/A', 5, 50, { align: 'left' });
 
 
       // *********** END OF REPORT BY ***********
@@ -289,13 +289,13 @@ export class HomeComponent implements OnInit {
       doc.setFont("Montserrat", 'bolder');
       doc.setTextColor('#3c4043');
       doc.setFontSize(12);
-      doc.text(this.reportData?.name.toUpperCase(), 205, 40, { align: 'right' });
+      doc.text(this.reportData?.name?.toUpperCase() ?? 'N/A', 205, 40, { align: 'right' });
 
       doc.setFont("Montserrat", 'normal');
       doc.setFontSize(9);
       doc.setTextColor('#5f6063');
-      doc.text(this.reportData?.phone, 205, 45, { align: 'right' });
-      doc.text(this.reportData?.email, 205, 50, { align: 'right' });
+      doc.text(this.reportData?.phone ?? 'N/A', 205, 45, { align: 'right' });
+      doc.text(this.reportData?.email ?? 'N/A', 205, 50, { align: 'right' });
       // *********** END OF REPORT TO ***********
 
 
@@ -328,10 +328,10 @@ export class HomeComponent implements OnInit {
       doc.setFont("Montserrat", 'normal');
       doc.setFontSize(10);
       doc.setTextColor('#5f6063');
-      doc.text(this.reportData?.deviceType, 200, 75, { align: 'right' });
-      doc.text(this.reportData?.brand, 200, 82, { align: 'right' });
-      doc.text(this.reportData?.imei, 200, 89, { align: 'right' });
-      doc.text(this.reportData?.accessories?.slice(0, 150)?.trim(), 200, 96, { align: 'right', maxWidth: 130 });
+      doc.text(this.reportData?.deviceType ?? 'N/A', 200, 75, { align: 'right' });
+      doc.text(this.reportData?.brand ?? 'N/A', 200, 82, { align: 'right' });
+      doc.text(this.reportData?.imei ?? 'N/A', 200, 89, { align: 'right' });
+      doc.text(this.reportData?.accessories?.slice(0, 150)?.trim() ?? 'N/A', 200, 96, { align: 'right', maxWidth: 130 });
 
       // *********** END OF DEVICE INFO ***********
 
@@ -350,7 +350,7 @@ export class HomeComponent implements OnInit {
       doc.setFont("Montserrat", 'normal');
       doc.setFontSize(10);
       doc.setTextColor('#5f6063');
-      doc.text(this.reportData?.reportedIssue, 48, 119, { align: 'left' });
+      doc.text(this.reportData?.reportedIssue ?? 'N/A', 48, 119, { align: 'left' });
 
       doc.setDrawColor('#e1e1e1');
       doc.setLineWidth(0.4);
@@ -365,7 +365,7 @@ export class HomeComponent implements OnInit {
       doc.setFont("Montserrat", 'normal');
       doc.setFontSize(10);
       doc.setTextColor('#5f6063');
-      doc.text(this.reportData?.diagnosisSummary?.slice(0, 250)?.trim(), 9, 136, { align: 'left', maxWidth: 190 });
+      doc.text(this.reportData?.diagnosisSummary?.slice(0, 250)?.trim() ?? 'N/A', 9, 136, { align: 'left', maxWidth: 190 });
 
       // *********** END OF REPORTED ISSUE INFO ***********
 
@@ -399,14 +399,14 @@ export class HomeComponent implements OnInit {
       doc.setFont("Montserrat", 'normal');
       doc.setFontSize(10);
       doc.setTextColor('#5f6063');
-      doc.text(this.reportData?.fix.slice(0, 250)?.trim(), 9, 179, { align: 'left', maxWidth: 190 });
-      doc.text(this.reportData?.repairTime + ' ' + this.reportData?.repairTimeUnit, 9, 197, { align: 'left' });
-      doc.text(this.reportData?.customerApproval, 150, 197, { align: 'left' });
+      doc.text(this.reportData?.fix?.slice(0, 250)?.trim() ?? 'N/A', 9, 179, { align: 'left', maxWidth: 190 });
+      doc.text((this.reportData?.repairTime ?? 'N/A') + ' ' + (this.reportData?.repairTimeUnit ?? 'N/A'), 9, 197, { align: 'left' });
+      doc.text(this.reportData?.customerApproval ?? 'N/A', 150, 197, { align: 'left' });
 
       doc.setFont("Montserrat", 'bolder');
       doc.setTextColor('#3c4043');
       doc.setFontSize(11);
-      doc.text(this.reportData?.currency + ' ' + (String(this.reportData?.amount).replace(/\B(?=(\d{3})+(?!\d))/g, ',') ?? '0'), 80, 197, { align: 'left' });
+      doc.text(this.reportData?.currency + ' ' + (String(this.reportData?.amount ?? 0).replace(/\B(?=(\d{3})+(?!\d))/g, ',') ?? '0'), 80, 197, { align: 'left' });
 
 
 
@@ -481,7 +481,7 @@ export class HomeComponent implements OnInit {
       doc.text('Diagnosis / Repair attempt fee charged is :', 9, (hasImages ? 33 : 225), { align: 'left', maxWidth: 80 });
       doc.setFont("Montserrat", 'bolder');
       doc.setFontSize(12);
-      doc.text(this.reportData?.repairCurrency + ' ' + (String(this.reportData?.repairAmount).replace(/\B(?=(\d{3})+(?!\d))/g, ',') ?? '0'), 15, (hasImages ? 38 : 230), { align: 'left' });
+      doc.text(this.reportData?.repairCurrency + ' ' + (String(this.reportData?.repairAmount ?? 0).replace(/\B(?=(\d{3})+(?!\d))/g, ',') ?? '0'), 15, (hasImages ? 38 : 230), { align: 'left' });
 
       // *********** END OF REPAIR PAYMENT  ***********
 
