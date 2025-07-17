@@ -4,7 +4,8 @@ import { Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, skip } from 'rxjs/operators';
 
 @Directive({
-  selector: '[ngModelDebounceChange]',
+    selector: '[ngModelDebounceChange]',
+    standalone: false
 })
 export class NgmodelDebounceChangeDirective implements OnDestroy, OnInit {
   /** Emit event when model has changed. */

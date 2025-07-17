@@ -8,18 +8,19 @@ import html2canvas from 'html2canvas';
 
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrl: './home.component.scss',
-  animations: [
-    trigger('fadeIn', [
-      transition(':enter', [
-        // :enter is alias to 'void => *'
-        style({ opacity: 0 }),
-        animate(400, style({ opacity: 1 })),
-      ]),
-    ]),
-  ],
+    selector: 'app-home',
+    templateUrl: './home.component.html',
+    styleUrl: './home.component.scss',
+    animations: [
+        trigger('fadeIn', [
+            transition(':enter', [
+                // :enter is alias to 'void => *'
+                style({ opacity: 0 }),
+                animate(400, style({ opacity: 1 })),
+            ]),
+        ]),
+    ],
+    standalone: false
 })
 export class HomeComponent implements OnInit {
 
