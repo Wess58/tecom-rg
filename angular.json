@@ -59,7 +59,7 @@
                   "maximumWarning": "2MB",
                   "maximumError": "2MB"
                 }
-              ],
+              ]
             },
             "development": {
               "optimization": false,
@@ -71,6 +71,12 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "buildTarget": "tecom-rg:build:development",
+            "proxyConfig": "proxy.conf.json",
+            "port": 4200,
+            "disableHostCheck": true
+          },
           "configurations": {
             "production": {
               "buildTarget": "tecom-rg:build:production"

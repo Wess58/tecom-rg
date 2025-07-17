@@ -1,0 +1,87 @@
+.login-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.login-card {
+  background-color: #fff;
+  margin-bottom: 30px;
+  overflow: hidden;
+
+  .logo-section {
+    width: 100%;
+    background-color: #fff;
+    margin-bottom: 50px;
+    padding: 10px;
+
+    .logo {
+      height: 55px;
+    }
+
+    .logo-wordmark {
+      color: #f08121;
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-left: 10px;
+      vertical-align: middle;
+    }
+  }
+
+  form {
+    padding: 0 40px;
+
+    h4 {
+      color: #005aa9;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+
+    .instruction {
+      color: #f1f1f1;
+      margin-bottom: 20px;
+    }
+
+    .form-group {
+      position: relative;
+
+      .fa-lock,
+      .fa-user {
+        position: absolute;
+        left: 30px;
+        top: 15px;
+        // padding-top: 10px !important;
+      }
+
+      input {
+        padding-left: 50px !important;
+      }
+    }
+
+    .eye-icon {
+      position: absolute;
+      top: 17px;
+      right: 30px;
+      cursor: pointer;
+    }
+
+    .forgot-password {
+      font-size: 0.9rem;
+      cursor: pointer;
+
+      &:hover {
+        text-decoration: underline;
+        color: #005aa9;
+      }
+    }
+
+    .btn-login {
+      background-color: #212121;
+      width: 100%;
+      margin-bottom: 70px;
+      color: #fff;
+      letter-spacing: 1px;
+    }
+  }
+}
