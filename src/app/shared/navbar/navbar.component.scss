@@ -1,0 +1,32 @@
+.navbar {
+  padding: 0 20px;
+  height: 65px;
+  background-color: #fff;
+  box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.02);
+
+  .navbar-nav {
+    align-items: center;
+
+    .nav-item {
+      margin: 0 15px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      border-bottom: 2px solid #fff;
+      transition: all 0.2s;
+
+      &:hover {
+        border-bottom: 2px solid #80868b;
+      }
+    }
+  }
+
+  .active-nav-item {
+    font-weight: 500;
+    border-bottom: 2px solid #f08121 !important;
+
+    .nav-link {
+      color: #f08121 !important;
+    }
+  }
+}

@@ -1,12 +1,22 @@
 import { Component } from '@angular/core';
 import { UsersService } from '../../../services/users.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { style, animate, transition, trigger } from '@angular/animations';
 
 @Component({
-    selector: 'app-login',
-    templateUrl: './login.component.html',
-    styleUrl: './login.component.scss',
-    standalone: false
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrl: './login.component.scss',
+  standalone: false,
+  animations: [
+    trigger('fadeIn', [
+      transition(':enter', [
+        // :enter is alias to 'void => *'
+        style({ opacity: 0 }),
+        animate(400, style({ opacity: 1 })),
+      ]),
+    ]),
+  ],
 })
 export class LoginComponent {
 
@@ -29,7 +39,7 @@ export class LoginComponent {
     this.logingIn = true;
 
     const data = {
-      username: this.login.username,
+      email: this.login.email,
       password: this.login.password
     }
 
@@ -38,13 +48,13 @@ export class LoginComponent {
         next: (res) => {
           // console.log(res);
           this.router.navigate(['/reports']);
-
+          sessionStorage.setItem('tcmuser', JSON.stringify(res));
         },
         error: (error) => {
           console.log(error);
 
           if (error?.error?.code === 401) {
-            this.errorMessage = 'Your account has been deactivated. Please contact ICT support for assistance.';
+            this.errorMessage = 'Your account has been deactivated. Please contact Admin for assistance.';
           } else {
             this.errorMessage = 'Please check your username or password and try again.';
           }

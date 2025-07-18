@@ -1,0 +1,152 @@
+<div class="container-fluid reports">
+	<div class="container">
+
+		<div class="card card-table">
+
+
+
+			<div class="table-header-section">
+				<div>
+					<h4 class="table-title"> Reports
+						<small class="table-subtitle" *ngIf="!loadingReports" [@fadeIn]>({{totalLength}}
+							items)</small>
+					</h4>
+
+				</div>
+				<div>
+					<!-- <button class="btn btn-download me-3" title="Redirects to Download File Metadata in Excel"
+						(click)="createBatchTask()" [disabled]="prepareBatch">
+						<span class="m-0"><i class="fa-solid fa-file-arrow-down"></i></span>
+					</button> -->
+					<button class="btn btn-create me-3" routerLink="/create-report">
+						<span><i class="fa-solid fa-plus"></i></span>&nbsp; Create report
+					</button>
+					<button class="btn btn-refresh" title="Refresh reports" (click)="getReports(page)">
+						<span><i class="fa-solid fa-sync"></i></span>&nbsp; Refresh
+					</button>
+				</div>
+			</div>
+
+			<!-- 	
+			<span class="filter-text">Filtering options</span>
+			<div class="filter-wrapper">
+	
+				<div class="wrap ms-0">
+					<select class="form-control" name="role" [(ngModel)]="filters.roleId" (change)="getReports(1)">
+						<option value="">All roles</option>
+						<option *ngFor="let role of roles;index as i" [value]="role.id">{{role.name}} </option>
+					</select>
+				</div>
+	
+				<div class="wrap ms-0">
+					<select class="form-control" name="status" [(ngModel)]="filters.status" (change)="getReports(1)">
+						<option value="">All statuses</option>
+						<option *ngFor="let status of statuses;index as i" [value]="status">{{status}} </option>
+					</select>
+				</div>
+	
+				<div class="wrap">
+					<input type="text" class="form-control" placeholder="name" name="name" [(ngModel)]="filters.name"
+						(keyup.enter)="getReports(1)" />
+				</div>
+	
+				<div class="wrap">
+					<input type="text" class="form-control" placeholder="email" name="email" [(ngModel)]="filters.email"
+						(keyup.enter)="getReports(1)" />
+				</div>
+	
+				<div class="wrap">
+					<button class="btn btn-refresh" title="Search reports" [disabled]="loadingReports" (click)="getReports(1)">
+						<span><i class="fa-solid fa-search"></i></span>&nbsp; Search
+					</button>
+				</div>
+	
+				<div class="wrap">
+					<button class="btn btn-clear-filters" [disabled]="loadingReports" (click)="resetFilters()">
+						clear filters
+					</button>
+				</div>
+			</div> -->
+
+			<div class="donut-container" *ngIf="loadingReports" [@fadeIn]>
+				<div class="donut-wrapper">
+					<div class="donut multi"></div>
+				</div>
+			</div>
+
+			<table class="table" *ngIf="reports.length && !loadingReports" [@fadeIn]>
+				<thead>
+					<tr>
+						<th scope="col">Name</th>
+						<th scope="col">Role</th>
+						<th scope="col">Email</th>
+						<th scope="col">Mobile number</th>
+						<th scope="col">Status</th>
+						<th scope="col">Created on</th>
+						<th scope="col" class="text-center" width="100px">
+							Actions
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr
+						*ngFor="let report of reports | paginate: { itemsPerPage: itemsPerPage, currentPage: page, totalItems: totalLength}; index as i">
+						<td>
+							{{ report.name }}
+						</td>
+						<td>
+							<span class="badge" [ngClass]="report.role === 'USER' ? 'badge-primary' : 'badge-black'">{{
+								report?.role }}</span>
+						</td>
+						<td>
+							{{ report.email ?? '—' }}
+						</td>
+						<td>
+							{{ report.phoneNumber ?? '—' }}
+						</td>
+						<td>
+							<span class="badge"
+								[ngClass]="report?.status === 'ACTIVE' ?  'badge-success' : 'badge-danger'">{{
+								report?.status }}</span>
+						</td>
+
+						<td>
+							{{(report.createdOn | date : 'MMM d y , HH:mm') ?? '—'}}
+						</td>
+						<td class="text-center">
+							<div class="dropdown">
+								<!-- *jhiHasAnyAuthority="['MAKER', 'DFS_CUSTOMER_PROFILE', 'RF_ADMIN']" -->
+								<button class="btn dropdown-toggle" type="button" id="dropdownMenuButton"
+									data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									<!-- [ngClass]="{'not-allowed':report?.status !== 'ACTIVE'}" -->
+									Actions
+								</button>
+								<div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+									<a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#createReportModal"
+										(click)="generateReport(report)">
+										Download
+									</a>
+
+									<!-- <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#reportActionModal"
+										(click)="selectReport(report,'DELETE')" [hidden]="currentReport.email === report.email">
+										Delete
+									</a> -->
+								</div>
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
+			<div class="pagination-container" align="center" class="mt-4"
+				*ngIf="totalLength > itemsPerPage && reports?.length && !loadingReports" [@fadeIn]>
+				<pagination-controls (pageChange)="getReports((page = $event))" [maxSize]="7" previousLabel=""
+					nextLabel=""></pagination-controls>
+			</div>
+
+			<div class="text-center my-5" *ngIf="!reports.length && !loadingReports">
+				<span class="text-muted">No reports found</span>
+			</div>
+		</div>
+	</div>
+</div>

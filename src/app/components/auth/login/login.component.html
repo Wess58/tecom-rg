@@ -1,59 +1,66 @@
 <div class="container login-page">
-	<div class="row justify-content-center">
-		<div class="col-md-5">
-			<div class="card login-card">
-
-				<div class="logo-section">
-					<!-- <img src="../../assets/images/hfc-logo.png" alt="" class="logo" /> -->
-					<span class="logo-wordmark">Tecom Advance Admin Portal</span>
+	<div class="card login-card" [@fadeIn]>
+		<div class="row">
+			<div class="col-md-7 px-0">
+				<div class="bg-img position-relative">
+					<img src="assets/images/login-bg-1.jpeg" alt="illustration">
+					<span class="inspiration-text">Be a Part of <br> Something <strong>Amazing</strong></span>
 				</div>
+			</div>
+			
+			<div class="col-md-5 px-0">
+				<div class="login-form">
 
-				<form class="form" role="form" [@fadeIn]>
-
-					<div class="alert alert-danger" *ngIf="authenticationError" data-cy="loginError" [@fadeIn]>
-						<strong>Failed to Login! </strong> {{errorMessage}}
+					<div class="logo-section">
+						<span class="d-block logo-wordmark">Tecom <span>Advance</span></span>
+						<span class="portal-name"> Admin Portal </span>
 					</div>
 
-					<h4>Login</h4>
+					<form class="form" role="form" [@fadeIn]>
 
-					<p class="instruction">Enter your credentials and click Login</p>
-
-					<div class="form-group row mb-4">
-						<div class="col-md-12">
-							<span><i class="fa-solid fa-user"></i></span>
-							<input type="text" class="form-control" name="username" id="username" placeholder="login"
-								(ngModelChange)="authenticationError = false" [(ngModel)]="login.username" #username
-								data-cy="username" />
+						<div class="alert alert-danger" *ngIf="authenticationError" data-cy="loginError" [@fadeIn]>
+							<strong>Failed to Login! </strong> {{errorMessage}}
 						</div>
-					</div>
 
-					<div class="form-group row mb-3">
-						<div class="col-md-12">
-							<span><i class="fa-solid fa-lock"></i></span>
+						<h4>Login</h4>
 
-							<input type="password" class="form-control" name="password" id="password"
-								placeholder="password" (ngModelChange)="authenticationError = false"
-								[(ngModel)]="login.password" data-cy="password" />
-							<span><i class="fa-solid eye-icon" [ngClass]="{ 'fa-eye': open, 'fa-eye-slash': !open }"
-									(click)="showPassword()"></i></span>
+						<div class="form-group row mb-4">
+							<div class="col-md-12">
+								<span><i class="fa-solid fa-user"></i></span>
+								<input type="text" class="form-control" name="email" id="email"
+									placeholder="email" (ngModelChange)="authenticationError = false"
+									[(ngModel)]="login.email" #username data-cy="email" />
+							</div>
 						</div>
-					</div>
 
-					<!-- <div class="row mb-5">
-								<div class="col-md-6 text-right">
-									<span [routerLink]="['/account/reset/request']" data-cy="forgetYourPasswordSelector"
-										class="forgot-password">Forgot password ?</span>
-								</div>
-							</div> -->
+						<div class="form-group row mb-3">
+							<div class="col-md-12">
+								<span><i class="fa-solid fa-lock"></i></span>
 
-					<div class="row mt-4">
-						<div class="col-md-12">
-							<button type="submit" class="btn btn-login" data-cy="submit" (click)="loginUser()"
-								[disabled]="logingIn">LOGIN</button>
+								<input type="password" class="form-control" name="password" id="password"
+									placeholder="password" (ngModelChange)="authenticationError = false"
+									[(ngModel)]="login.password" data-cy="password" />
+								<span><i class="fa-solid eye-icon" [ngClass]="{ 'fa-eye': open, 'fa-eye-slash': !open }"
+										(click)="showPassword()"></i></span>
+							</div>
 						</div>
-					</div>
-				</form>
 
+						<!-- <div class="row mb-5">
+									<div class="col-md-6 text-right">
+										<span [routerLink]="['/account/reset/request']" data-cy="forgetYourPasswordSelector"
+											class="forgot-password">Forgot password ?</span>
+									</div>
+								</div> -->
+
+						<div class="row mt-4">
+							<div class="col-md-12">
+								<button type="submit" class="btn btn-login" data-cy="submit" (click)="loginUser()"
+									[disabled]="logingIn">Login</button>
+							</div>
+						</div>
+					</form>
+
+				</div>
 			</div>
 		</div>
 	</div>

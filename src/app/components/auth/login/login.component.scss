@@ -6,26 +6,57 @@
 }
 
 .login-card {
-  background-color: #fff;
-  margin-bottom: 30px;
+  width: 100%;
+  border-radius: 20px;
+  overflow: hidden;
+  background-color: #212121;
+}
+
+.inspiration-text {
+  position: absolute;
+  bottom: 30px;
+  left: 40px;
+  z-index: 100;
+  color: #fff;
+  font-size: 2.2rem;
+}
+
+.bg-img {
+  height: 650px;
   overflow: hidden;
 
-  .logo-section {
+  img {
     width: 100%;
-    background-color: #fff;
-    margin-bottom: 50px;
-    padding: 10px;
+    height: 100%;
+    object-fit: cover;
+    position: relative;
+    border-radius: 20px;
+    mask: linear-gradient(20deg, transparent, #000 90%);
+    // backdrop-filter: blur(1px);
+  }
+}
 
-    .logo {
-      height: 55px;
-    }
+.login-form {
+  padding-top: 5vh;
+
+  .logo-section {
+    margin-bottom: 10vh;
+    padding: 0 40px;
 
     .logo-wordmark {
-      color: #f08121;
-      font-size: 1.2rem;
+      color: var(--app-blue);
+      font-size: 2rem;
       font-weight: 600;
-      margin-left: 10px;
-      vertical-align: middle;
+
+      span {
+        color: var(--app-gold);
+      }
+    }
+
+    .portal-name {
+      color: #f1f1f1;
+      font-size: 1.3rem;
+      // font-weight: 600;
     }
   }
 
@@ -33,9 +64,9 @@
     padding: 0 40px;
 
     h4 {
-      color: #005aa9;
-      font-weight: 600;
-      margin-bottom: 20px;
+      color: #f1f1f1;
+      margin-bottom: 5vh;
+      font-size: 1.3rem;
     }
 
     .instruction {
@@ -54,9 +85,31 @@
         // padding-top: 10px !important;
       }
 
+      input:-webkit-autofill,
+      input:-webkit-autofill:hover,
+      input:-webkit-autofill:focus,
+      input:-webkit-autofill:active {
+        -webkit-text-fill-color: #fff !important;
+        -webkit-box-shadow: 0 0 0 30px #5f6063 inset !important;
+      }
+
       input {
         padding-left: 50px !important;
+        background-color: #5f6063;
+        border: 2px solid #80868b !important;
+        color: #fff !important;
+
+        &:active,
+        &:focus,
+        &:hover {
+          border: 2px solid var(--app-blue) !important;
+          color: #fff !important;
+        }
       }
+    }
+
+    .fa-solid {
+      color: #fff;
     }
 
     .eye-icon {
@@ -77,11 +130,12 @@
     }
 
     .btn-login {
-      background-color: #212121;
+      background-color: var(--app-blue);
       width: 100%;
-      margin-bottom: 70px;
-      color: #fff;
+      color: #3c4043;
       letter-spacing: 1px;
+      font-weight: 600;
+      padding: 10px;
     }
   }
 }
