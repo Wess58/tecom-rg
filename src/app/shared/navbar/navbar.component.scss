@@ -14,6 +14,7 @@
       cursor: pointer;
       border-bottom: 2px solid #fff;
       transition: all 0.2s;
+      color: #5f6063;
 
       &:hover {
         border-bottom: 2px solid #80868b;
@@ -23,10 +24,56 @@
 
   .active-nav-item {
     font-weight: 500;
-    border-bottom: 2px solid #f08121 !important;
+    border-bottom: 2px solid #212121 !important;
 
     .nav-link {
-      color: #f08121 !important;
+      color: #212121 !important;
     }
+  }
+
+  .profile-nav-link {
+    border: 1px solid #e1e1e1;
+    border-radius: 20px;
+    padding: 7px 20px;
+    font-weight: 600;
+    min-width: 200px;
+    display: flex;
+    align-items: center;
+
+	&:hover{
+		border-color: #212121;
+	}
+
+    &::after {
+      content: none !important;
+    }
+
+    .role {
+      font-size: 0.7rem;
+      color: #80868b;
+      // font-weight: normal;
+    }
+
+    .fa-solid {
+      position: relative;
+      top: -12px;
+      font-size: 1.1rem;
+    }
+  }
+
+  .profile-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 15px;
+    width: 40px;
+    height: 40px;
+    padding-top: 3px;
+    border-radius: 50%;
+    background-color: #212121;
+    color: #13d0d5;
+    font-weight: 600;
+    font-size: 1.4rem !important;
+    text-transform: uppercase;
   }
 }

@@ -20,7 +20,7 @@ import { Toast } from '../../services/toast.model';
       transition(':enter', [
         // :enter is alias to 'void => *'
         style({ opacity: 0, marginRight: -100 }),
-        animate("300ms ease-in-out", style({ opacity: 1, marginRight: 0 })),
+        animate("200ms ease-in-out", style({ opacity: 1, marginRight: 0 })),
       ]),
       transition(':leave', [
         // :enter is alias to 'void => *'

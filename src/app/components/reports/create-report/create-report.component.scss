@@ -1,12 +1,13 @@
 .container {
-  padding: 5vh 10px;
+  padding: 0 10px;
+  padding-bottom: 5vh;
 
   .platform-title {
     font-size: 1.4rem;
     display: block;
     margin-bottom: 10px;
     font-weight: 600;
-    color: var(--app-blue);
+    color: #3c4043;
   }
 
   form {
@@ -60,26 +61,26 @@
         display: flex;
         select {
           width: 50%;
-          border-radius: 20px 0 0 20px !important;
+          border-radius: 4px 0 0 4px !important;
         }
         input {
-          border-radius: 0 20px 20px 0 !important;
+          border-radius: 0 4px 4px 0 !important;
         }
       }
 
       .shared-form-group-inversed {
         select {
           width: 50%;
-          border-radius: 0 20px 20px 0 !important;
+          border-radius: 0 4px 4px 0 !important;
         }
         input {
-          border-radius: 20px 0 0 20px !important;
+          border-radius: 4px 0 0 4px !important;
         }
       }
     }
 
     .btn-add-images {
-      background-color: #0f1786;
+      background-color: #212121;
       padding: 5px 10px;
       font-size: 0.75rem;
       letter-spacing: 0.5px;
@@ -142,7 +143,7 @@
     }
 
     .btn-generate {
-      background-color: #0f1786;
+      background-color: #212121;
       color: #fff;
       font-weight: 600;
       letter-spacing: 0.5px;

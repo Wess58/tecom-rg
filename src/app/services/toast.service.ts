@@ -18,8 +18,13 @@ export class ToastService {
       type,
       duration
     };
-    
-    this.toasts$.next([...this.toasts$.value, toast]);
+
+    this.toasts$.next([]);
+    setTimeout(() => {
+      this.toasts$.next([toast]);
+    }, 100);
+    // this.toasts$.next([...this.toasts$.value, toast]);
+
 
     // auto‐dismiss
     setTimeout(() => this.dismiss(toast.id), duration);
@@ -31,7 +36,7 @@ export class ToastService {
 
   // convenience methods
   success(msg: string, d?: number) { this.show(msg, 'success', d); }
-  error(msg: string, d?: number)   { this.show(msg, 'error',   d); }
-  info(msg: string, d?: number)    { this.show(msg, 'info',    d); }
+  error(msg: string, d?: number) { this.show(msg, 'error', d); }
+  info(msg: string, d?: number) { this.show(msg, 'info', d); }
   warning(msg: string, d?: number) { this.show(msg, 'warning', d); }
 }

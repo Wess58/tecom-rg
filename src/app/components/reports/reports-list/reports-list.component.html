@@ -3,8 +3,6 @@
 
 		<div class="card card-table">
 
-
-
 			<div class="table-header-section">
 				<div>
 					<h4 class="table-title"> Reports
@@ -77,11 +75,12 @@
 			<table class="table" *ngIf="reports.length && !loadingReports" [@fadeIn]>
 				<thead>
 					<tr>
-						<th scope="col">Name</th>
-						<th scope="col">Role</th>
-						<th scope="col">Email</th>
-						<th scope="col">Mobile number</th>
-						<th scope="col">Status</th>
+						<th scope="col">Client name</th>
+						<th scope="col">Client contact</th>
+						<th scope="col">Device</th>
+						<th scope="col">Issue</th>
+						<th scope="col">Repair amount</th>
+						<th scope="col">Created by</th>
 						<th scope="col">Created on</th>
 						<th scope="col" class="text-center" width="100px">
 							Actions
@@ -91,24 +90,24 @@
 				<tbody>
 					<tr
 						*ngFor="let report of reports | paginate: { itemsPerPage: itemsPerPage, currentPage: page, totalItems: totalLength}; index as i">
+						<td> {{ report?.reportData?.name ?? '—' }} </td>
+
 						<td>
-							{{ report.name }}
+							<span class="d-block mb-2"> {{report?.reportData?.phone ?? '—'}} </span>
+							<span class="text-muted">{{ report?.reportData?.email ?? '—' }}</span>
 						</td>
+
 						<td>
-							<span class="badge" [ngClass]="report.role === 'USER' ? 'badge-primary' : 'badge-black'">{{
-								report?.role }}</span>
+							<span class="d-block mb-2">{{ report?.reportData?.deviceType ?? '—' }}</span>
+							<span> {{report?.reportData?.brand ?? '—'}} </span>
 						</td>
-						<td>
-							{{ report.email ?? '—' }}
-						</td>
-						<td>
-							{{ report.phoneNumber ?? '—' }}
-						</td>
-						<td>
-							<span class="badge"
-								[ngClass]="report?.status === 'ACTIVE' ?  'badge-success' : 'badge-danger'">{{
-								report?.status }}</span>
-						</td>
+
+						<td> {{report?.reportData?.reportedIssue ?? '—'}} </td>
+
+						<td> {{report?.reportData?.repairAmount | currency : (report?.reportData?.repairCurrency + ' ')
+							: 'symbol' : '1.0-2'}} </td>
+
+						<td> {{report?.reportData?.techName ?? '—'}} </td>
 
 						<td>
 							{{(report.createdOn | date : 'MMM d y , HH:mm') ?? '—'}}
@@ -123,7 +122,7 @@
 								</button>
 								<div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
 									<a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#createReportModal"
-										(click)="generateReport(report)">
+										(click)="generateReport(report?.reportData)">
 										Download
 									</a>
 

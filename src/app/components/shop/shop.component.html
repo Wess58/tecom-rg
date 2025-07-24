@@ -1,1 +1,479 @@
-<p>shop works!</p>
+<div class="container-fluid products">
+	<div class="container">
+
+		<div class="card card-table">
+
+
+
+			<div class="table-header-section">
+				<div>
+					<h4 class="table-title"> Products
+						<small class="table-subtitle" *ngIf="!loadingProducts" [@fadeIn]>({{totalLength}}
+							items)</small>
+					</h4>
+
+				</div>
+				<div>
+					<!-- <button class="btn btn-download me-3" title="Redirects to Download File Metadata in Excel"
+						(click)="createBatchTask()" [disabled]="prepareBatch">
+						<span class="m-0"><i class="fa-solid fa-file-arrow-down"></i></span>
+					</button> -->
+					<button class="btn btn-create me-3" data-bs-toggle="modal" data-bs-target="#createProductModal"
+						(click)="resetProduct()">
+						<span><i class="fa-solid fa-plus"></i></span>&nbsp; Create product
+					</button>
+					<button class="btn btn-refresh" title="Refresh products" (click)="getProducts(page)">
+						<span><i class="fa-solid fa-sync"></i></span>&nbsp; Refresh
+					</button>
+
+					<div class="view-toogle">
+						<button class="btn" [ngClass]="{'active-toggle':!isGrid}" (click)="isGrid = false"
+							appTooltip="List display"><i class="fa-solid fa-table"></i></button>
+						<button class="btn" [ngClass]="{'active-toggle':isGrid}" (click)="isGrid = true"
+							appTooltip="Grid display"><i class="fa-solid fa-list"></i></button>
+					</div>
+				</div>
+			</div>
+
+			<!-- 	
+			<span class="filter-text">Filtering options</span>
+			<div class="filter-wrapper">
+	
+				<div class="wrap ms-0">
+					<select class="form-control" name="role" [(ngModel)]="filters.roleId" (change)="getProducts(1)">
+						<option value="">All roles</option>
+						<option *ngFor="let role of roles;index as i" [value]="role.id">{{role.name}} </option>
+					</select>
+				</div>
+	
+				<div class="wrap ms-0">
+					<select class="form-control" name="status" [(ngModel)]="filters.status" (change)="getProducts(1)">
+						<option value="">All statuses</option>
+						<option *ngFor="let status of statuses;index as i" [value]="status">{{status}} </option>
+					</select>
+				</div>
+	
+				<div class="wrap">
+					<input type="text" class="form-control" placeholder="name" name="name" [(ngModel)]="filters.name"
+						(keyup.enter)="getProducts(1)" />
+				</div>
+	
+				<div class="wrap">
+					<input type="text" class="form-control" placeholder="email" name="email" [(ngModel)]="filters.email"
+						(keyup.enter)="getProducts(1)" />
+				</div>
+	
+				<div class="wrap">
+					<button class="btn btn-refresh" title="Search products" [disabled]="loadingProducts" (click)="getProducts(1)">
+						<span><i class="fa-solid fa-search"></i></span>&nbsp; Search
+					</button>
+				</div>
+	
+				<div class="wrap">
+					<button class="btn btn-clear-filters" [disabled]="loadingProducts" (click)="resetFilters()">
+						clear filters
+					</button>
+				</div>
+			</div> -->
+
+			<div class="donut-container" *ngIf="loadingProducts" [@fadeIn]>
+				<div class="donut-wrapper">
+					<div class="donut multi"></div>
+				</div>
+			</div>
+
+			<table class="table" *ngIf="products.length && !loadingProducts && !isGrid" [@fadeIn]>
+				<thead>
+					<tr>
+						<th scope="col">Name</th>
+						<th scope="col">Price</th>
+						<th scope="col" width="20%">Description</th>
+						<th scope="col">Hidden</th>
+						<th scope="col">Available</th>
+						<th scope="col">onOffer</th>
+						<th scope="col">Created on</th>
+						<th scope="col" class="text-center" width="100px">
+							Actions
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr
+						*ngFor="let product of products | paginate: { itemsPerPage: itemsPerPage, currentPage: page, totalItems: totalLength}; index as i">
+						<td>
+							<a class="redirect-link d-flex" data-bs-toggle="modal" data-bs-target="#productModal"
+								(click)="selectProduct(product,'VIEW')">
+								<div class="img-holder">
+									<img [src]="(product.coverImage | sanitizeFileUrl)" [alt]="product.name + 'image'"
+										imageFallback>
+								</div>
+								{{ product.name }}
+							</a>
+						</td>
+						<td>{{product.price | currency: 'KES ':'symbol':'1.0-2'}}</td>
+						<td>
+							{{product.description}}
+						</td>
+						<td [ngClass]="{'red-text fw-bold':product.hidden}">
+							{{ product.hidden ? 'YES' : 'NO' }}
+						</td>
+						<td [ngClass]="{'red-text fw-bold':!product.available}">
+							{{ product.available ? 'YES' : 'NO' }}
+						</td>
+						<td>
+							<span class="d-block">{{ product.onOffer ? 'YES' : 'NO' }}</span>
+							<span *ngIf="product.onOffer">{{product.price | currency: 'KES ':'symbol':'1.0-2'}}</span>
+						</td>
+
+						<td>
+							{{(product.createdOn | date : 'MMM d y , HH:mm') ?? '—'}}
+						</td>
+						<td class="text-center">
+							<div class="dropdown">
+								<!-- *jhiHasAnyAuthority="['MAKER', 'DFS_CUSTOMER_PROFILE', 'RF_ADMIN']" -->
+								<button class="btn dropdown-toggle" type="button" id="dropdownMenuButton"
+									data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									<!-- [ngClass]="{'not-allowed':product?.status !== 'ACTIVE'}" -->
+									Actions
+								</button>
+								<div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+									<a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#createProductModal"
+										(click)="selectProduct(product,'EDIT')">
+										Edit
+									</a>
+									<a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#productActionModal"
+										(click)="selectProduct(product,'ACTIVATE')">
+										Activate product
+									</a>
+									<a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#productActionModal"
+										(click)="selectProduct(product,'DEACTIVATE')">
+										Deactivate product
+									</a>
+									<a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#productActionModal"
+										(click)="selectProduct(product,'DELETE')">
+										Delete
+									</a>
+								</div>
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
+			<!-- PRODUCTS LISTING  -->
+			<div class="products-list" *ngIf="products?.length && !loadingProducts && isGrid" [@fadeIn]>
+				<div class="grid-item"
+					*ngFor="let product of products | paginate: { itemsPerPage: itemsPerPage, currentPage: page, totalItems: totalLength}; index as i">
+					<div class="product-item" data-bs-toggle="modal" data-bs-target="#productModal"
+						(click)="selectProduct(product,'VIEW')">
+
+						<div class="image-holder">
+							<img [src]="(product.coverImage | sanitizeFileUrl)" [alt]="product.name + 'image'"
+								imageFallback>
+						</div>
+
+						<div class="content">
+							<h4 class="name">{{product.name}} </h4>
+							<span class="price"> {{product.price | currency: 'KES ':'symbol':'1.0-2'}} </span>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+			<div class="pagination-container" align="center" class="mt-4"
+				*ngIf="totalLength > itemsPerPage && products?.length && !loadingProducts" [@fadeIn]>
+				<pagination-controls (pageChange)="getProducts((page = $event))" [maxSize]="7" previousLabel=""
+					nextLabel=""></pagination-controls>
+			</div>
+
+			<div class="text-center my-5" *ngIf="!products.length && !loadingProducts">
+				<span class="text-muted">No products found</span>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- FILES UPLOAD INPUT  -->
+<div class="wrap" hidden>
+	<div class="col-md-2">
+		<input type="file" class="custom-file-input" (change)="onFileChange($event)"
+			[accept]="'.png, .jpg, .jpeg, .heic'" multiple id="uploadfile" name="file" />
+		<!-- <label class="custom-file-label" for="uploadFile"></label> -->
+	</div>
+</div>
+
+
+
+<!-- Create / Edit Product Modal -->
+<div class="modal fade" id="createProductModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title" id="exampleModalLabel">{{product?.id ? 'Edit' : 'Create'}} product </h4>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+					id="closeEditModal"></button>
+			</div>
+			<div class="modal-body px-4">
+
+				<div class="alert alert-danger" *ngIf="productActionFail" [@fadeIn]>
+					<strong>Failed to {{(product?.id ? 'edit' : 'create')}} product! </strong> {{errorMessage}}.
+				</div>
+
+				<form class="row">
+
+					<!-- <div class="form-group col-md-6">
+						<label>Role</label>
+						<select class="form-control" name="role" [(ngModel)]="product.role" required="required"
+							data-error="Select role">
+							<option *ngFor="let role of ['SUPER_ADMIN','USER']" [value]="role">
+								{{role}} </option>
+						</select>
+					</div> -->
+
+					<div class="form-group col-md-6">
+						<label for="">Product name</label>
+						<input type="text" class="form-control" name="name" [(ngModel)]="product.name"
+							placeholder="Enter name" autocomplete="off">
+					</div>
+
+
+					<div class="form-group col-md-6">
+						<label for="">Price </label>
+						<input type="text" class="form-control" placeholder="Enter price in KES" name="price"
+							[(ngModel)]="product.price" pattern="[0-9]*" inputmode="numeric"
+							oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" />
+					</div>
+
+
+					<div class="form-group col-md-6">
+						<label for="">Product description</label>
+						<textarea class="form-control" name="description" [(ngModel)]="product.description"
+							cols="4"></textarea>
+					</div>
+
+					<div class="form-group col-md-6">
+						<label for="">Compatible devices </label>
+						<textarea class="form-control" name="compatibleDevices" [(ngModel)]="product.compatibleDevices"
+							placeholder="Enter the devices names as comma separated" cols="4"></textarea>
+					</div>
+
+
+					<div class="border-top py-4 mt-4">
+						<div class="d-flex justify-content-between align-items-center mb-3">
+							<h5 class="instruction-title mb-0">Product images</h5>
+
+							<button type="button" class="btn btn-refresh" (click)="openUploadDialog()">Upload</button>
+						</div>
+
+						<div class="key-listing" *ngIf="productImages?.length" [@fadeIn]>
+							<div class="key-item {{ key.style }}" *ngFor="let key of fileKeys"
+								[appTooltip]="key.titleDesc">
+								<span class="icon"><i class="fas fa-square"></i></span>
+								<span class="desc"> {{ key.desc }} </span>
+							</div>
+						</div>
+
+						<div class="product-media-listing">
+							<div class="file-item" *ngFor="let file of productImages; index as i"
+								[ngClass]="{ 'duplicate-error': file.duplicate, 'upload-success': file.uploaded, 'upload-error': file.failed }">
+
+								<div class="product-content">
+									<div class="terms-checkbox cursor-pointer" appTooltip="Set as product cover image">
+										<input type="checkbox" [name]="'coverImage-' + (i+1)"
+											[checked]="product.coverImage === file.uuid" (change)="setCoverImage(file)"
+											[disabled]="disableIfFileActivity() || file.duplicate || !file.uploaded" />
+									</div>
+									<div class="image-item">
+										<img class="d-block w-100" src="{{ file.previewUrl }}" alt="blob"
+											*ngIf="file.previewUrl" [@fadeIn] />
+									</div>
+
+									<span class="title">{{ file.name }}</span>
+								</div>
+
+
+
+								<div class="icon-container">
+									<span class="icon mr-2" appTooltip="Retry uploading" tooltipPosition="left"
+										*ngIf="!file.uploading && !file.duplicate && file.failed" [@fadeIn]
+										(click)="uploadFile(file)">
+										<i class="fa-solid fa-rotate-right"></i>
+									</span>
+									<span class="icon" appTooltip="Remove from list" tooltipPosition="left"
+										*ngIf="!file.uploading && !file.compressing" [@fadeIn]
+										(click)="removeFileFromList(i)">
+										<i class="fa-solid fa-trash-can"></i>
+									</span>
+									<span class="spinner-icon"
+										[appTooltip]="file.compressing ? 'Compressing ...' : 'Uploading ...'"
+										tooltipPosition="left" *ngIf="file.uploading || file.compressing" [@fadeIn]>
+										<i class="fa-solid fa-spinner fa-spin"></i>
+									</span>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="border-top border-bottom py-4 mb-4">
+
+						<div class="terms-checkbox cursor-pointer d-flex align-items-center text-muted mb-4"
+							(click)="product.hidden = !product.hidden">
+							<input type="checkbox" name="hidden" [checked]="product.hidden" />
+							Hide product from user listing ? it will only be visible for admins.
+						</div>
+
+						<div class="terms-checkbox cursor-pointer d-flex align-items-center text-muted mb-4"
+							(click)="product.available = !product.available">
+							<input type="checkbox" name="available" [checked]="product.available" />
+							Is product currently available ?
+						</div>
+
+						<div class="form-group col-md-6">
+							<label for="">Next available date</label>
+							<input type="date" class="form-control" name="nextAvailableDate"
+								[(ngModel)]="product.nextAvailableDate"
+								[appTooltip]="product.available ? 'Disabled because product is currently available - change above' : ''"
+								[disabled]="product.available" [readOnly]="product.available" placeholder="Select date"
+								autocomplete="off">
+						</div>
+
+					</div>
+
+					<div class="mb-4">
+
+						<div class="terms-checkbox cursor-pointer d-flex align-items-center text-muted mb-4"
+							(click)="product.onOffer = !product.onOffer">
+							<input type="checkbox" name="onOffer" [checked]="product.onOffer" />
+							Is product on offer ?
+						</div>
+
+						<div class="form-group col-md-6">
+							<label for="">Offer price </label>
+							<input type="text" class="form-control" placeholder="Enter offer price in KES"
+								name="offerPrice" [(ngModel)]="product.offerPrice" pattern="[0-9]*" inputmode="numeric"
+								[appTooltip]="!product.onOffer ? 'Disabled because product is not on offer - change above' : ''"
+								[disabled]="!product.onOffer" [readOnly]="!product.onOffer"
+								oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" />
+						</div>
+
+
+					</div>
+
+
+
+
+
+				</form>
+
+
+
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Cancel</button>
+				<button type="button" class="btn btn-submit" (click)="product?.id ? editProduct() : createProduct()"
+					[disabled]="performingAction || !product.name || !product.price || !product.description || !productImages.length">
+					{{performingAction ? 'Creating ...' : 'Create'}}
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<!-- Activate / Deactivate / Delete Product Modal -->
+<div class="modal fade" id="productActionModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-md modal-dialog-centered modal-dialog-scrollable">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title" id="exampleModalLabel">{{action | titlecase}} product </h4>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+					id="closeProductActionModal"></button>
+			</div>
+			<div class="modal-body py-4">
+
+				<div class="alert alert-danger" *ngIf="productActionFail" [@fadeIn]>
+					<strong>Failed to {{action | lowercase}} product! </strong> {{errorMessage}}.
+				</div>
+
+				You are about to <strong [ngClass]="action !== 'ACTIVATE' ? 'red-text' : 'green-text'">
+					{{action | lowercase}} </strong>
+				<strong>{{product?.name}}'s</strong>
+				account. Would you like to proceed?
+
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Cancel</button>
+
+				<button type="button" class="btn" [ngClass]="action !== 'ACTIVATE' ? 'btn-delete'  : 'btn-submit'"
+					(click)="editProduct()" [disabled]="performingAction">{{action | titlecase}}</button>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+
+<!-- VIEW PRODUCT MODAL  -->
+<div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+	data-bs-keyboard="true">
+	<div class="modal-dialog modal-xl modal-fullscreen-sm-down modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Product details</h5>
+				<button type="button" class="btn-close me-2" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+
+				<ng-container *ngIf="product?.name;">
+					<div class="row">
+						<div class="col-md-6">
+							<div class="image-holder position-relative">
+								<button class="btn btn-share" [appTooltip]="!isCopied ? 'Copy link' : 'Copied !'"
+									(click)="copyLink(product)" (mouseleave)="isCopied = false">
+									<span class="icon"><i class="fa-solid fa-arrow-up-from-bracket"></i></span>
+								</button>
+								<img [src]="(product.coverImage | sanitizeFileUrl)" [alt]="product.name + 'image'"
+									imageFallback>
+							</div>
+						</div>
+						<div class="col-md-6">
+
+							<div class="content">
+								<span class="d-block mb-2 price red-text" *ngIf="!product.hidden"> * This product is
+									hidden on the website </span>
+								<h4 class="name">{{product.name}} </h4>
+								<span class="d-block desc pb-3 mb-3 border-bottom">{{product.description}}</span>
+
+
+								<h5 class="section-desc"> Compatible devices </h5>
+								<span class="d-block desc pb-3 mb-3  border-bottom">
+									{{product.compatibleDevices.join(' , ')}}
+								</span>
+
+
+								<span class="d-block price pb-3 mb-3 border-bottom">
+									{{product.price | currency: 'KES ':'symbol':'1.0-2'}}
+								</span>
+
+								<div class="d-inline pb-3 mb-3 border-bottom">
+									<span class="d-block desc">
+										Is product on offer - <span class="price"
+											[ngClass]="!product.onOffer ? 'text-muted' : 'red-text'"></span>
+										{{product.onOffer ? 'YES' : 'NO'}}
+									</span>
+									<span class="d-block">
+										Offer price : <span class="price"> {{product.offerPrice | currency: 'KES
+											':'symbol':'1.0-2'}}</span>
+									</span>
+								</div>
+
+							</div>
+
+						</div>
+					</div>
+				</ng-container>
+			</div>
+		</div>
+	</div>
+</div>

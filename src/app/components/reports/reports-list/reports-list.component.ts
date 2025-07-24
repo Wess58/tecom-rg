@@ -4,6 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { ToastService } from '../../../services/toast.service';
 import { ReportsService } from '../../../services/reports.service';
+import { GenerateReportService } from '../../../services/generate-report.service';
+
 
 @Component({
   selector: 'app-reports-list',
@@ -41,7 +43,8 @@ export class ReportsListComponent implements OnInit {
     public router: Router,
     private activatedRoute: ActivatedRoute,
     private toastService: ToastService,
-    private reportsService: ReportsService
+    private reportsService: ReportsService,
+    private generateReportService: GenerateReportService
 
   ) { }
 
@@ -96,8 +99,21 @@ export class ReportsListComponent implements OnInit {
     )
   }
 
+  callToast():void{
+    this.toastService.info('Generating report ...');
+
+  }
+
 
   generateReport(report: any): void {
+
+    this.toastService.info('Generating report ...');
+
+    const selectedFiles: any[] = [];
+
+    setTimeout(() => {
+      this.generateReportService.generateReport(report, selectedFiles, true);
+    }, 1500);
 
   }
 

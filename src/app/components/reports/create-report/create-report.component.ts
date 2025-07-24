@@ -5,7 +5,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 import moment from 'moment';
 import jsPDF from "jspdf";
 import html2canvas from 'html2canvas';
-
+import { GenerateReportService } from '../../../services/generate-report.service';
+import { ToastService } from '../../../services/toast.service';
 
 @Component({
   selector: 'app-create-report',
@@ -61,12 +62,14 @@ export class CreateReportComponent implements OnInit {
 
   constructor(
     public activatedRoute: ActivatedRoute,
-    public router: Router
+    public router: Router,
+    private generateReportService: GenerateReportService,
+    private toastService: ToastService
   ) { }
 
   ngOnInit(): void {
     window.scroll(0, 0);
-    // this.reportData = JSON.parse(localStorage.getItem('rptjson') ?? '{}');
+    this.reportData = JSON.parse(localStorage.getItem('rptjson') ?? '{}');
     this.reportData.tech = JSON.parse(localStorage?.getItem('techId') ?? '1');
     // console.log(this.reportData);
     this.deviceTypes = this.deviceTypes.sort((a: string, b: string) => a.localeCompare(b));
@@ -100,14 +103,14 @@ export class CreateReportComponent implements OnInit {
 
     this.selectedFiles = [...this.selectedFiles, ...event.target.files];
 
-     this.selectedFiles.forEach((file: any, index: any) => {
+    this.selectedFiles.forEach((file: any, index: any) => {
 
       file.index = index;
       const reader = new FileReader();
       reader.onload = (e) => { file.image = reader.result; };
 
       reader.readAsDataURL(file);
-      
+
     });
   }
 
@@ -185,11 +188,15 @@ export class CreateReportComponent implements OnInit {
     });
   }
 
+
   generateReport(): void {
+    this.toastService.info('Generating report ...');
+
+    setTimeout(() => {
+      this.generateReportService.generateReport(this.reportData, this.selectedFiles);
+    }, 1500);
 
   }
-
-
 
 
 }

@@ -5,6 +5,7 @@
 // ng build --base-href https://wess58.github.io/tecom-rg/ --output-path docs/ && mv docs/browser/* docs/ && rm -rf docs/browser && git add . && git commit -m "docs ready for deployment" && git push
 // PROD
 // ng build &&  mv dist/browser/* dist/ && rm -rf dist/browser
+// @import url('https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
 
 :root {
   --app-blue: #13d0d5;
@@ -17,6 +18,10 @@ html {
 
 body {
   font-family: "Montserrat", sans-serif;
+
+  // font-family: "Work Sans", sans-serif;
+  font-optical-sizing: auto;
+
   letter-spacing: 1px;
   scroll-behavior: smooth !important;
   overflow-x: hidden !important;
@@ -27,6 +32,7 @@ body {
   text-rendering: optimizeSpeed;
   letter-spacing: 1px;
   color: #5f6063;
+  // font-weight: 600;
 }
 
 * a,
@@ -112,12 +118,33 @@ textarea:hover {
   color: #80868b99 !important;
 }
 
+.terms-checkbox {
+  font-size: 0.9rem;
+
+  input {
+    margin-right: 15px;
+    margin-left: 5px;
+    height: 20px;
+    width: 20px;
+    cursor: pointer;
+  }
+
+  a {
+    color: #80868b;
+    text-decoration: underline;
+  }
+}
+
 .red-text {
   color: #d11a2a !important;
 }
 
 .green-text {
   color: #36a636 !important;
+}
+
+.orange-text {
+  color: #ffa500 !important;
 }
 
 .red-border-input {
@@ -141,6 +168,10 @@ textarea:hover {
 
 .container {
   min-width: 80vw;
+}
+
+.cursor-pointer {
+  cursor: pointer !important;
 }
 
 .dropdown-menu {
@@ -203,8 +234,6 @@ textarea:hover {
 .badge {
   text-transform: uppercase;
   font-size: 13px !important;
-
-  
 }
 
 .badge-danger {
@@ -214,7 +243,7 @@ textarea:hover {
 
 .badge-success {
   background-color: #adf0cc;
-  color: #14713f; 
+  color: #14713f;
 }
 
 .badge-secondary {
@@ -235,6 +264,84 @@ textarea:hover {
 .badge-black {
   background-color: #212121;
   color: #fff;
+}
+
+.upload-success {
+  border: 2px solid #84bd00 !important;
+}
+
+.duplicate-error {
+  border: 2px solid #ffa500 !important;
+}
+
+.upload-error {
+  border: 2px solid #d11a2a99 !important;
+}
+
+// **********************************
+// MEDIA UPLOAD STYLING
+// *************************************
+
+.product-media-listing {
+  .file-item {
+    border: 2px solid #f1f1f1;
+    padding: 10px 20px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+
+    .product-content {
+      width: 90%;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .image-item {
+      width: 60px;
+      height: 60px;
+      border: 1px solid #f1f1f1;
+      border-radius: 12px;
+      overflow: hidden;
+      margin-right: 20px;
+      background-color: #f1f1f1;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+
+    .icon-container {
+      .icon {
+        padding: 13px 15px;
+        cursor: pointer;
+
+        &:hover {
+          background-color: #e1e1e1;
+          border-radius: 50%;
+        }
+      }
+    }
+  }
+}
+
+.key-listing {
+  .key-item {
+    display: inline-block;
+    margin: 0 25px 5px 0;
+
+    .icon {
+      margin-right: 5px;
+    }
+
+    .desc {
+      font-size: 0.9rem;
+    }
+  }
 }
 
 // ****************************************
@@ -297,12 +404,12 @@ textarea:hover {
     td {
       color: #5f6063;
       font-size: 0.9rem;
-      vertical-align: middle;
+      // vertical-align: middle;
       border-bottom: 1px solid #f1f1f1;
       padding: 10px 8px;
 
       .redirect-link {
-        color: #005aa9;
+        color: #3c4043;
         text-decoration: none;
         cursor: pointer;
         text-underline-offset: 2px;
@@ -482,7 +589,6 @@ textarea:hover {
   }
 }
 
-
 // ******************************
 // GLOBAL SPINNER STYLING
 // *******************************
@@ -511,5 +617,11 @@ textarea:hover {
 @keyframes spin {
   to {
     transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 1500px) {
+  body {
+    zoom: 90%;
   }
 }

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { UsersService } from '../../../services/users.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { style, animate, transition, trigger } from '@angular/animations';
+import { ApiCacheService } from '../../../services/api-cache.service';
 
 @Component({
   selector: 'app-login',
@@ -30,7 +31,8 @@ export class LoginComponent {
   constructor(
     public router: Router,
     private activatedRoute: ActivatedRoute,
-    private usersService: UsersService
+    private usersService: UsersService,
+    private apiCacheService: ApiCacheService
   ) { }
 
 
@@ -48,7 +50,10 @@ export class LoginComponent {
         next: (res) => {
           // console.log(res);
           this.router.navigate(['/reports']);
-          sessionStorage.setItem('tcmuser', JSON.stringify(res));
+          localStorage.setItem('tcmuser', JSON.stringify(res));
+          localStorage.setItem('basicAuth', JSON.stringify(res.basicAuth));
+          this.apiCacheService.set('tcmuserStamp', {});
+
         },
         error: (error) => {
           console.log(error);

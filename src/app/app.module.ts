@@ -2,8 +2,9 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule, provideAnimations } from '@angular/platform-browser/animations';
-import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { provideHttpClient, withInterceptors, HTTP_INTERCEPTORS, withInterceptorsFromDi } from '@angular/common/http';
 import { PathLocationStrategy, LocationStrategy, CommonModule } from '@angular/common';
+import { HttpTokenInterceptor } from './interceptors/http.token.interceptor';
 import { NgxPaginationModule } from 'ngx-pagination';
 
 
@@ -17,6 +18,9 @@ import { LoginComponent } from './components/auth/login/login.component';
 import { ReportsListComponent } from './components/reports/reports-list/reports-list.component';
 import { CreateReportComponent } from './components/reports/create-report/create-report.component';
 import { ToastComponent } from './shared/toast/toast.component';
+import { SanitizeFileUrlPipe } from './pipes/sanitize-file-url.pipe';
+import { AppTooltipDirective } from './directives/app-tooltip.directive';
+import { ImageFallbackDirective } from './directives/image-fallback.directive';
 
 @NgModule({
   declarations: [
@@ -28,7 +32,10 @@ import { ToastComponent } from './shared/toast/toast.component';
     LoginComponent,
     ReportsListComponent,
     CreateReportComponent,
-    ToastComponent
+    ToastComponent,
+    SanitizeFileUrlPipe,
+    AppTooltipDirective,
+    ImageFallbackDirective
   ],
   imports: [
     BrowserModule,
@@ -39,7 +46,12 @@ import { ToastComponent } from './shared/toast/toast.component';
     // HttpClientModule
   ],
   providers: [
-    provideAnimations(), provideHttpClient()
+    provideAnimations(), provideHttpClient(withInterceptorsFromDi()),
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpTokenInterceptor,
+      multi: true
+    },
   ],
   bootstrap: [AppComponent]
 })
