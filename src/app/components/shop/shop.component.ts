@@ -132,7 +132,6 @@ export class ShopComponent implements OnInit {
 
     selectProduct(product: any, action: string): void {
 
-        console.log(product);
         this.action = action;
         this.product = Object.assign({}, product);
         
