@@ -42,7 +42,7 @@ export class ProductsService {
   }
 
   deleteProduct(id: number): Observable<any> {
-    return this.httpClient.delete(`${this.baseUrl}/organizations/${id}`);
+    return this.httpClient.delete(`${this.baseUrl}/products/${id}`);
   }
 
 }

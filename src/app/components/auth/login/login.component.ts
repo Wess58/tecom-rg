@@ -49,10 +49,18 @@ export class LoginComponent {
       {
         next: (res) => {
           // console.log(res);
-          this.router.navigate(['/reports']);
-          localStorage.setItem('tcmuser', JSON.stringify(res));
-          localStorage.setItem('basicAuth', JSON.stringify(res.basicAuth));
-          this.apiCacheService.set('tcmuserStamp', {});
+
+          if (res.status === 'ACTIVE') {
+            localStorage.setItem('tcmuser', JSON.stringify(res));
+            localStorage.setItem('basicAuth', res.basicAuth);
+            delete res.basicAuth;
+
+            this.apiCacheService.set('tcmuserStamp', {});
+            this.router.navigate(['/reports']);
+          } else {
+            this.errorMessage = 'Your account has been deactivated. Please contact Admin for assistance.';
+            this.authenticationError = true;
+          }
 
         },
         error: (error) => {

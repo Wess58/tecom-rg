@@ -21,43 +21,41 @@ export class NavbarComponent {
         private apiCacheService: ApiCacheService
     ) {
         router.events.subscribe((val) => {
-            if (val instanceof ActivationEnd && !this.currentUser?.id) {
+            if (val instanceof ActivationEnd && !this.router.url.includes('login') && !this.currentUser?.userId) {
                 this.currentUser = JSON.parse(localStorage.getItem('tcmuser') || '{}');
-                this.currentUser?.userId ? this.getUserWithCache(this.currentUser.userId) : '';
+                this.currentUser?.userId ? this.getUserWithCache(this.currentUser.userId) : this.logout();
             }
         });
     }
 
 
     getUserWithCache(userId: number) {
-        const cacheKey = `user_${userId}`;
+        // const cacheKey = `user_${userId}`;
         const cachedUser = this.apiCacheService.get<any>('tcmuserStamp');
 
         if (cachedUser) {
-            // console.log('cachedUser', cachedUser);
             this.currentUser = JSON.parse(localStorage.getItem('tcmuser') || '{}');
         } else {
 
-            // console.log('not cached');
-
             this.usersService.getOneUser(userId).subscribe(res => {
                 // console.log('not cached', res);
-                if(res.status !== 'ACTIVE'){
+                if (res.body.status !== 'ACTIVE') {
                     this.logout();
-                }
+                } else {
 
-                const user = {
-                    email: res.body.email,
-                    name: res.body.name,
-                    status: res.body.status,
-                    role: res.body.role,
-                    userId: res.body.id,
-                    jobTitle: res.body.jobTitle
-                }
+                    const user = {
+                        email: res.body.email,
+                        name: res.body.name,
+                        status: res.body.status,
+                        role: res.body.role,
+                        userId: res.body.id,
+                        jobTitle: res.body.jobTitle
+                    }
 
-                localStorage.setItem('tcmuser', JSON.stringify(user));
-                this.currentUser = { ...user };
-                this.apiCacheService.set('tcmuserStamp', user);
+                    localStorage.setItem('tcmuser', JSON.stringify(user));
+                    this.currentUser = { ...user };
+                    this.apiCacheService.set('tcmuserStamp', user);
+                }
 
             });
         }
@@ -68,7 +66,6 @@ export class NavbarComponent {
     logout(): void {
         this.router.navigate(['/login']);
         this.currentUser = {};
-
         // localStorage.removeItem('tcmuser');
         this.apiCacheService.clearAll();
         // localStorage.removeItem('url');

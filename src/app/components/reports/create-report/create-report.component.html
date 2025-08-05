@@ -1,7 +1,7 @@
 <div class="container" [@fadeIn]>
 	<div class="row justify-content-center">
 		<div class="col-md-10">
-			<div class="platform-title">Report Generator</div>
+			<div class="platform-title">{{action | titlecase}} report </div>
 
 			<form class="form" autocomplete="new-password">
 				<div class="section">
@@ -38,7 +38,10 @@
 
 						<div class="col-md-6">
 							<div class="form-group">
-								<label>Client email</label>
+								<label>Client email
+									<small class="red-text fw-normal fst-italic ms-2" *ngIf="emailInvalid" [@fadeIn]>
+										Email is invalid</small>
+								</label>
 								<input type="text" class="form-control" name="uemail" id="uemail"
 									[(ngModel)]="reportData.email" (ngModelChange)="emailInvalid = false"
 									(ngModelDebounceChange)="validateEmail()" autocomplete="new-password">
@@ -217,7 +220,17 @@
 
 				<div class="section">
 
-					<div class="d-flex justify-content-between mb-3">
+
+					<app-image-upload [inputImages]="selectedFiles" [showSetCoverImage]="false" [limit]="2"
+						(entityImagesEmit)="updateImages($event)"></app-image-upload>
+
+					<div class="text-center">
+						<small class="text-muted d-block my-2">
+							Select up to <strong>2 images</strong> to be used as attached references.
+						</small>
+					</div>
+
+					<!-- <div class="d-flex justify-content-between mb-3">
 						<span class="section-title mb-0"> Attach images </span>
 						<button type="button" class="btn btn-add-images" (click)="openUploadDialog()"
 							[disabled]="selectedFiles?.length === 2"> Upload images
@@ -229,18 +242,10 @@
 						<div class="col-md-2">
 							<input type="file" class="custom-file-input" (change)="onFileChange($event)"
 								accept=".png, .jpg, .jpeg" multiple id="uploadfile" name="file" />
-							<!-- <label class="custom-file-label" for="uploadFile"></label> -->
 						</div>
 					</div>
 
-
-					<div class="text-center">
-						<small class="text-muted d-block mt-4 mb-2">
-							Select up to <strong>2 images</strong> to be used as attached references.
-						</small>
-					</div>
-
-
+					
 					<div *ngIf="selectedFiles?.length" class="image-listing" [@fadeIn]>
 						<div class="mb-3" *ngFor="let image of selectedFiles; let i = index">
 							<div class="image-item" *ngIf="!image.documentType" data-bs-toggle="modal"
@@ -254,9 +259,7 @@
 								</span>
 							</div>
 						</div>
-					</div>
-
-
+					</div> -->
 				</div>
 
 
@@ -267,7 +270,7 @@
 
 					<div class="row">
 
-						<div class="col-md-4">
+						<!-- <div class="col-md-4">
 							<div class="form-group">
 								<label>Technician name</label>
 								<select class="form-control" name="tech" [(ngModel)]="reportData.tech">
@@ -275,7 +278,7 @@
 									</option>
 								</select>
 							</div>
-						</div>
+						</div> -->
 
 						<div class="col-md-4">
 							<div class="form-group">

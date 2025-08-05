@@ -5,8 +5,6 @@ import { HttpEventType, HttpResponse } from '@angular/common/http';
 
 import { ProductsService } from '../../services/products.service';
 import { ToastService } from '../../services/toast.service';
-import { FILE_BORDER_KEYS } from '../../app.constants'
-import { ComprssNConvrtService } from '../../services/comprss-n-convrt.service';
 import moment from 'moment';
 
 @Component({
@@ -38,7 +36,6 @@ export class ShopComponent implements OnInit {
     productImages: any[] = [];
     isGrid = false;
 
-    fileKeys = FILE_BORDER_KEYS;
     currentProduct: any = {};
     emailInvalid: boolean = false;
 
@@ -54,16 +51,18 @@ export class ShopComponent implements OnInit {
     totalLength: any;
     isCopied: boolean = false;
 
+    currentImageIndex = 0;
+
+
     constructor(
         public router: Router,
         private activatedRoute: ActivatedRoute,
         private productsService: ProductsService,
         private toastService: ToastService,
-        private comprssNConvrtService: ComprssNConvrtService
     ) { }
 
     ngOnInit(): void {
-        this.currentProduct = JSON.parse(sessionStorage.getItem('tcmproduct') || '{}');
+        this.currentProduct = JSON.parse(localStorage.getItem('tcmproduct') || '{}');
 
         window.scrollTo({ top: 1, behavior: "smooth" });
 
@@ -80,9 +79,7 @@ export class ShopComponent implements OnInit {
         this.products = [];
 
         const options = {
-            // roleId: this.filters.roleId,
             // email: this.filters.email?.trim() ?? '',
-            // name: this.filters.name?.trim() ?? '',
             // status: this.filters.status,
             pageSize: this.itemsPerPage,
             pageNo: this.page - 1,
@@ -94,8 +91,6 @@ export class ShopComponent implements OnInit {
             queryParams: {
                 page,
                 // roleId: this.filters.roleId,
-                // status: this.filters.status,
-                // email: this.filters.email?.trim() ?? '',
                 // name: this.filters.name?.trim() ?? ''
             },
             queryParamsHandling: 'merge',
@@ -107,6 +102,13 @@ export class ShopComponent implements OnInit {
                 next: (res) => {
                     // console.log(res);
                     this.products = res.body;
+                    this.products.forEach((product: any) => {
+                        !product?.media?.length ? product.media = [] : '';
+                        product?.media.splice(0, 0, product.coverImage);
+                        product.compatibleDevices = product?.compatibleDevices?.join(' , ') || ''; 
+
+                    });
+
                     this.totalLength = Number(res.headers.get('X-Total-Items'));
                     this.loadingProducts = false;
 
@@ -129,18 +131,24 @@ export class ShopComponent implements OnInit {
     }
 
     selectProduct(product: any, action: string): void {
-        this.product = { ...product };
-        this.productImages = product.media && product.media.map((str: string) => (
-            {
-                previewUrl: window.location.origin + '/api/media/file/' + str,
-                uuid: str,
-                name: str,
-                uploaded: true,
-                compressed: true
-            }
-        ));        
 
+        console.log(product);
         this.action = action;
+        this.product = Object.assign({}, product);
+        
+        this.productImages = [];
+        this.productImages = JSON.parse(JSON.stringify(
+            this.product.media.map((str: string) => (
+                {
+                    // previewUrl: window.location.origin + '/api/media/file/' + str,
+                    uuid: str,
+                    name: str,
+                    uploaded: true,
+                    compressed: true
+                }
+            ))
+        ));
+
     }
 
 
@@ -149,20 +157,7 @@ export class ShopComponent implements OnInit {
         this.performingAction = true;
         this.productActionFail = false;
 
-        const product = Object.assign({}, this.product);
-
-        !product?.coverImage?.length ? product.coverImage = this.productImages[0].uuid : '';
-        product.media = this.productImages.filter((image: any) => image.uuid !== product.coverImage).map((image: any) => image.uuid);
-        product.compatibleDevices = product.compatibleDevices.split(',').map((str: string) => str.trim());
-        product.price = +product.price;
-        product.offerPrice = +product.offerPrice || 0;
-        product.inventoryCount = +product.inventoryCount || 0;
-
-        console.log(product);
-
-        // moment().format('DD/MM/YYYY')
-
-        this.productsService.createProduct(product).subscribe(
+        this.productsService.createProduct(this.productFieldsFormatter).subscribe(
             {
                 next: (res) => {
 
@@ -184,15 +179,15 @@ export class ShopComponent implements OnInit {
     }
 
 
-    editProduct(): void {
+    editProduct(modalId: string = 'closeEditModal'): void {
         this.performingAction = true;
         this.productActionFail = false;
 
-        this.productsService.updateProduct(this.product).subscribe(
+        this.productsService.updateProduct(this.productFieldsFormatter()).subscribe(
             {
                 next: (res) => {
                     this.performingAction = false;
-                    this.closeModal('closeEditModal');
+                    this.closeModal(modalId);
                     this.getProducts(this.page);
 
                     this.toastService.success('Product updated successfully!');
@@ -208,77 +203,71 @@ export class ShopComponent implements OnInit {
         )
     }
 
+    productFieldsFormatter():any{
 
+        // moment().format('DD/MM/YYYY')
+
+        const product = Object.assign({}, this.product);
+        product.price = +product.price;
+        product.offerPrice = +product.offerPrice || 0;
+        product.inventoryCount = +product.inventoryCount || 0;
+
+        !product?.coverImage?.length ? product.coverImage = this.productImages[0].uuid : '';
+        product.media = this.productImages.filter((image: any) => image.uuid !== product.coverImage).map((image: any) => image.uuid);
+        product.compatibleDevices = product.compatibleDevices.split(',').map((str: string) => str.trim());
+
+        return product;
+    }
+
+    changeProductState(): void {
+        this.product.hidden = !this.product.hidden;
+
+        this.editProduct('closeProductActionModal');
+    }
+
+
+    deleteProduct(): void {
+        this.performingAction = true;
+        this.productActionFail = false;
+
+        this.productsService.deleteProduct(this.product.id).subscribe(
+            {
+                next: (res) => {
+                    this.performingAction = false;
+                    this.closeModal('closeProductActionModal');
+                    this.getProducts(this.page);
+
+                    this.toastService.success('Product deleted successfully!');
+                },
+                error: (error) => {
+                    console.log(error);
+                    this.productActionFail = true;
+                    this.performingAction = false;
+                    this.errorMessage = error?.desc ?? 'Please try again in 15 minutes';
+
+                }
+            }
+        )
+    }
+
+    updateImages(productImages: any): void {
+        this.productImages = productImages;
+    }
+
+    setCoverImage(uuid: any): void {
+        this.product.coverImage = uuid;
+    }
 
     resetProduct(): void {
         this.product = { available: true, hidden: false, onOffer: false };
         this.performingAction = false;
         this.productActionFail = false;
+        this.productImages = [];
     }
 
     closeModal(id: string): void {
         const close: any = document.getElementById(id) as HTMLElement;
         close?.click();
-    }
-
-    openUploadDialog(): void {
-        // this.selectedDocumentSide = docSide;
-        setTimeout(() => {
-            document.getElementById('uploadfile')?.click();
-        }, 10);
-    }
-
-    onFileChange(event: any): void {
-        [...event.target.files].forEach((newFile: any) => {
-            // const reader = new FileReader();
-            // reader.onload = (e) => (newFile.image = reader.result);
-            // reader.readAsDataURL(newFile);
-
-            newFile.fileName = newFile.name.substr(0, newFile.name.lastIndexOf('.'));
-            newFile.failCount = 0;
-            newFile.duplicate = this.productImages.some((file: any) => newFile.name === file.name);
-        });
-
-        this.productImages = [...this.productImages, ...[...event.target.files]];
-
-        this.productImages.forEach((file: any, index: number) => {
-
-            if (!file.uploaded && !file.compressed) {
-                file.compressing = true;
-                setTimeout(() => {
-                    this.comprssNConvrtService.compress(file);
-                }, 500 * (index + 1));
-            }
-        });
-    }
-
-
-    uploadFile(file: any): void {
-        this.comprssNConvrtService.compress(file);
-    }
-
-    duplicateFileFound(): boolean {
-        return this.productImages.filter((file: any) => file.duplicate).length > 0;
-    }
-
-    setCoverImage(file: any): void {
-        this.product.coverImage = file.uuid;
-    }
-
-    removeFileFromList(index: number): void {
-        this.checkForMoreDuplicates(this.productImages[index]);
-        setTimeout(() => {
-            this.productImages.splice(index, 1);
-        }, 100);
-    }
-
-    checkForMoreDuplicates(fileToRemove: any): void {
-        const files: any = this.productImages.filter((file: any) => file.name === fileToRemove.name);
-        files.length > 1 ? ((files[1].duplicate = false), this.uploadFile(files[1])) : '';
-    }
-
-    disableIfFileActivity(): boolean {
-        return !this.productImages?.length || this.productImages.some(file => file.uploading === true || file.compressing === true);
     }
 
 }

@@ -58,7 +58,7 @@ export class CreateReportComponent implements OnInit {
   ];
 
   repairTimeUnits: string[] = ['mins', 'hours', 'days', 'weeks', 'months', 'years'];
-
+  action: string = 'create';
 
   constructor(
     public activatedRoute: ActivatedRoute,
@@ -69,12 +69,30 @@ export class CreateReportComponent implements OnInit {
 
   ngOnInit(): void {
     window.scroll(0, 0);
-    this.reportData = JSON.parse(localStorage.getItem('rptjson') ?? '{}');
-    this.reportData.tech = JSON.parse(localStorage?.getItem('techId') ?? '1');
+    if (localStorage.getItem('rptjson')) this.reportData = JSON.parse(localStorage.getItem('rptjson') ?? '{}');
+    this.reportData?.media?.length ? this.setImages() : '';
+
+    // this.reportData.tech = JSON.parse(localStorage?.getItem('techId') ?? '1');
     // console.log(this.reportData);
     this.deviceTypes = this.deviceTypes.sort((a: string, b: string) => a.localeCompare(b));
     this.issueTypes = this.issueTypes.sort((a: string, b: string) => a.localeCompare(b));
+    this.action = this.activatedRoute.snapshot.queryParams['type'] ?? 'create';
+  }
 
+
+  setImages(): void {
+    this.selectedFiles = [];
+    this.selectedFiles = JSON.parse(JSON.stringify(
+      this.reportData.media.map((str: string) => (
+        {
+          // previewUrl: window.location.origin + '/api/media/file/' + str,
+          uuid: str,
+          name: str,
+          uploaded: true,
+          compressed: true
+        }
+      ))
+    ));
   }
 
   validateEmail(): void {
@@ -100,6 +118,9 @@ export class CreateReportComponent implements OnInit {
 
 
   onFileChange(event: any): void {
+
+    console.log('here');
+
 
     this.selectedFiles = [...this.selectedFiles, ...event.target.files];
 
@@ -128,6 +149,10 @@ export class CreateReportComponent implements OnInit {
   removeImage(): void {
     this.selectedFiles.splice(this.selectedImage.index, 1);
 
+  }
+
+  updateImages(selectedFiles: any): void {
+    this.selectedFiles = selectedFiles;
   }
 
 

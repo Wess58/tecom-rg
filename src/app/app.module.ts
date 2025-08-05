@@ -21,6 +21,9 @@ import { ToastComponent } from './shared/toast/toast.component';
 import { SanitizeFileUrlPipe } from './pipes/sanitize-file-url.pipe';
 import { AppTooltipDirective } from './directives/app-tooltip.directive';
 import { ImageFallbackDirective } from './directives/image-fallback.directive';
+import { StaffFromEmailPipe } from './pipes/staff-from-email.pipe';
+import { HasAuthorityDirective } from './directives/has-authority.directive';
+import { ImageUploadComponent } from './components/image-upload/image-upload.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +38,10 @@ import { ImageFallbackDirective } from './directives/image-fallback.directive';
     ToastComponent,
     SanitizeFileUrlPipe,
     AppTooltipDirective,
-    ImageFallbackDirective
+    ImageFallbackDirective,
+    StaffFromEmailPipe,
+    HasAuthorityDirective,
+    ImageUploadComponent
   ],
   imports: [
     BrowserModule,

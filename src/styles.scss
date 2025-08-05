@@ -159,7 +159,6 @@ textarea:hover {
 
 .outlet {
   min-height: calc(100vh - 50px);
-  padding-top: 100px;
 }
 
 .container-fluid {
@@ -518,6 +517,7 @@ textarea:hover {
   .modal-title {
     font-weight: 600;
     color: #3c4043;
+    font-size: 1.4rem;
   }
 
   .modal-content {
@@ -584,6 +584,11 @@ textarea:hover {
     .btn-submit {
       // background-color: #13d0d5;
       background-color: #212121;
+      color: #fff;
+    }
+
+    .btn-delete {
+      background-color: #d11a2a;
       color: #fff;
     }
   }

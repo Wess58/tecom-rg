@@ -26,7 +26,7 @@
 						<span><i class="fa-solid fa-sync"></i></span>&nbsp; Refresh
 					</button>
 
-					<div class="view-toogle">
+					<div class="view-toogle" hidden>
 						<button class="btn" [ngClass]="{'active-toggle':!isGrid}" (click)="isGrid = false"
 							appTooltip="List display"><i class="fa-solid fa-table"></i></button>
 						<button class="btn" [ngClass]="{'active-toggle':isGrid}" (click)="isGrid = true"
@@ -85,13 +85,13 @@
 			<table class="table" *ngIf="products.length && !loadingProducts && !isGrid" [@fadeIn]>
 				<thead>
 					<tr>
-						<th scope="col">Name</th>
+						<th scope="col" width="20%">Name</th>
 						<th scope="col">Price</th>
 						<th scope="col" width="20%">Description</th>
 						<th scope="col">Hidden</th>
 						<th scope="col">Available</th>
-						<th scope="col">onOffer</th>
-						<th scope="col">Created on</th>
+						<th scope="col">On offer</th>
+						<th scope="col">Created by / on</th>
 						<th scope="col" class="text-center" width="100px">
 							Actions
 						</th>
@@ -121,11 +121,12 @@
 							{{ product.available ? 'YES' : 'NO' }}
 						</td>
 						<td>
-							<span class="d-block">{{ product.onOffer ? 'YES' : 'NO' }}</span>
-							<span *ngIf="product.onOffer">{{product.price | currency: 'KES ':'symbol':'1.0-2'}}</span>
+							<span class="d-block mb-1">{{ product.onOffer ? 'YES' : 'NO' }}</span>
+							<small class="" *ngIf="product.onOffer">({{product.price
+								| currency: 'KES ':'symbol':'1.0-2'}})</small>
 						</td>
-
 						<td>
+							<span class="d-block mb-1">{{product.createdBy | staffFromEmail }}</span>
 							{{(product.createdOn | date : 'MMM d y , HH:mm') ?? '—'}}
 						</td>
 						<td class="text-center">
@@ -142,12 +143,12 @@
 										Edit
 									</a>
 									<a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#productActionModal"
-										(click)="selectProduct(product,'ACTIVATE')">
-										Activate product
+										(click)="selectProduct(product,'UNHIDE')" *ngIf="product.hidden">
+										Unhide product
 									</a>
 									<a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#productActionModal"
-										(click)="selectProduct(product,'DEACTIVATE')">
-										Deactivate product
+										(click)="selectProduct(product,'HIDE')" *ngIf="!product.hidden">
+										Hide product
 									</a>
 									<a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#productActionModal"
 										(click)="selectProduct(product,'DELETE')">
@@ -194,14 +195,7 @@
 	</div>
 </div>
 
-<!-- FILES UPLOAD INPUT  -->
-<div class="wrap" hidden>
-	<div class="col-md-2">
-		<input type="file" class="custom-file-input" (change)="onFileChange($event)"
-			[accept]="'.png, .jpg, .jpeg, .heic'" multiple id="uploadfile" name="file" />
-		<!-- <label class="custom-file-label" for="uploadFile"></label> -->
-	</div>
-</div>
+
 
 
 
@@ -258,62 +252,7 @@
 							placeholder="Enter the devices names as comma separated" cols="4"></textarea>
 					</div>
 
-
-					<div class="border-top py-4 mt-4">
-						<div class="d-flex justify-content-between align-items-center mb-3">
-							<h5 class="instruction-title mb-0">Product images</h5>
-
-							<button type="button" class="btn btn-refresh" (click)="openUploadDialog()">Upload</button>
-						</div>
-
-						<div class="key-listing" *ngIf="productImages?.length" [@fadeIn]>
-							<div class="key-item {{ key.style }}" *ngFor="let key of fileKeys"
-								[appTooltip]="key.titleDesc">
-								<span class="icon"><i class="fas fa-square"></i></span>
-								<span class="desc"> {{ key.desc }} </span>
-							</div>
-						</div>
-
-						<div class="product-media-listing">
-							<div class="file-item" *ngFor="let file of productImages; index as i"
-								[ngClass]="{ 'duplicate-error': file.duplicate, 'upload-success': file.uploaded, 'upload-error': file.failed }">
-
-								<div class="product-content">
-									<div class="terms-checkbox cursor-pointer" appTooltip="Set as product cover image">
-										<input type="checkbox" [name]="'coverImage-' + (i+1)"
-											[checked]="product.coverImage === file.uuid" (change)="setCoverImage(file)"
-											[disabled]="disableIfFileActivity() || file.duplicate || !file.uploaded" />
-									</div>
-									<div class="image-item">
-										<img class="d-block w-100" src="{{ file.previewUrl }}" alt="blob"
-											*ngIf="file.previewUrl" [@fadeIn] />
-									</div>
-
-									<span class="title">{{ file.name }}</span>
-								</div>
-
-
-
-								<div class="icon-container">
-									<span class="icon mr-2" appTooltip="Retry uploading" tooltipPosition="left"
-										*ngIf="!file.uploading && !file.duplicate && file.failed" [@fadeIn]
-										(click)="uploadFile(file)">
-										<i class="fa-solid fa-rotate-right"></i>
-									</span>
-									<span class="icon" appTooltip="Remove from list" tooltipPosition="left"
-										*ngIf="!file.uploading && !file.compressing" [@fadeIn]
-										(click)="removeFileFromList(i)">
-										<i class="fa-solid fa-trash-can"></i>
-									</span>
-									<span class="spinner-icon"
-										[appTooltip]="file.compressing ? 'Compressing ...' : 'Uploading ...'"
-										tooltipPosition="left" *ngIf="file.uploading || file.compressing" [@fadeIn]>
-										<i class="fa-solid fa-spinner fa-spin"></i>
-									</span>
-								</div>
-							</div>
-						</div>
-					</div>
+					<app-image-upload [coverImage]="product.coverImage" [inputImages]="productImages" (coverImageEmit)="setCoverImage($event)" (entityImagesEmit)="updateImages($event)" ></app-image-upload>
 
 					<div class="border-top border-bottom py-4 mb-4">
 
@@ -360,20 +299,14 @@
 
 					</div>
 
-
-
-
-
 				</form>
-
-
 
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Cancel</button>
 				<button type="button" class="btn btn-submit" (click)="product?.id ? editProduct() : createProduct()"
 					[disabled]="performingAction || !product.name || !product.price || !product.description || !productImages.length">
-					{{performingAction ? 'Creating ...' : 'Create'}}
+					{{performingAction ? (product?.id ? 'Updating ...' : 'Creating ...') : (product?.id ? 'Update' : 'Create')}}
 				</button>
 			</div>
 		</div>
@@ -396,17 +329,17 @@
 					<strong>Failed to {{action | lowercase}} product! </strong> {{errorMessage}}.
 				</div>
 
-				You are about to <strong [ngClass]="action !== 'ACTIVATE' ? 'red-text' : 'green-text'">
-					{{action | lowercase}} </strong>
-				<strong>{{product?.name}}'s</strong>
-				account. Would you like to proceed?
+				You are about to <strong [ngClass]="action !== 'UNHIDE' ? 'red-text' : 'green-text'">
+					{{action | lowercase}} </strong> product <strong>{{product?.name}}</strong> . Would you like to
+				proceed?
 
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Cancel</button>
 
-				<button type="button" class="btn" [ngClass]="action !== 'ACTIVATE' ? 'btn-delete'  : 'btn-submit'"
-					(click)="editProduct()" [disabled]="performingAction">{{action | titlecase}}</button>
+				<button type="button" class="btn" [ngClass]="action !== 'UNHIDE' ? 'btn-delete'  : 'btn-submit'"
+					(click)="action === 'DELETE' ? deleteProduct() : changeProductState()"
+					[disabled]="performingAction">{{action | titlecase}}</button>
 			</div>
 		</div>
 	</div>
@@ -425,7 +358,7 @@
 			</div>
 			<div class="modal-body">
 
-				<ng-container *ngIf="product?.name;">
+				<ng-container *ngIf="action === 'VIEW'">
 					<div class="row">
 						<div class="col-md-6">
 							<div class="image-holder position-relative">
@@ -433,14 +366,45 @@
 									(click)="copyLink(product)" (mouseleave)="isCopied = false">
 									<span class="icon"><i class="fa-solid fa-arrow-up-from-bracket"></i></span>
 								</button>
-								<img [src]="(product.coverImage | sanitizeFileUrl)" [alt]="product.name + 'image'"
-									imageFallback>
+								<div id="carouselExampleIndicators" class="carousel slide">
+									<div class="carousel-indicators top-0 bottom-100" *ngIf="productImages.length > 1">
+										@for (item of productImages; track $index) {
+										<button type="button" data-bs-target="#carouselExampleIndicators"
+											[ngClass]="{'active':$index === currentImageIndex}"
+											(click)="currentImageIndex = $index" [attr.data-bs-slide-to]="$index"
+											aria-current="true"></button>
+										}
+									</div>
+
+									<div class="carousel-inner">
+										<div class="carousel-item" [ngClass]="{'active':isFirst}"
+											*ngFor="let image of productImages;index as i; first as isFirst">
+											<img class="d-block w-100" [src]="(image.uuid | sanitizeFileUrl)"
+												[alt]="product.name + 'image'" imageFallback>
+										</div>
+									</div>
+
+									<ng-container *ngIf="productImages.length > 1">
+										<button class="carousel-control-prev" type="button"
+											data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+											<span class="navigation-icon"> <i class="fa-solid fa-chevron-left"></i>
+											</span>
+										</button>
+										<button class="carousel-control-next" type="button"
+											data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+											<span class="navigation-icon"> <i class="fa-solid fa-chevron-right"></i>
+											</span>
+										</button>
+									</ng-container>
+
+
+								</div>
 							</div>
 						</div>
 						<div class="col-md-6">
 
 							<div class="content">
-								<span class="d-block mb-2 price red-text" *ngIf="!product.hidden"> * This product is
+								<span class="d-block mb-2 price red-text" *ngIf="product.hidden"> * This product is
 									hidden on the website </span>
 								<h4 class="name">{{product.name}} </h4>
 								<span class="d-block desc pb-3 mb-3 border-bottom">{{product.description}}</span>
@@ -448,7 +412,7 @@
 
 								<h5 class="section-desc"> Compatible devices </h5>
 								<span class="d-block desc pb-3 mb-3  border-bottom">
-									{{product.compatibleDevices.join(' , ')}}
+									{{product?.compatibleDevices}}
 								</span>
 
 
@@ -456,15 +420,31 @@
 									{{product.price | currency: 'KES ':'symbol':'1.0-2'}}
 								</span>
 
-								<div class="d-inline pb-3 mb-3 border-bottom">
-									<span class="d-block desc">
-										Is product on offer - <span class="price"
-											[ngClass]="!product.onOffer ? 'text-muted' : 'red-text'"></span>
-										{{product.onOffer ? 'YES' : 'NO'}}
+								<div class="pb-3 mb-3 border-bottom">
+									<span class="d-flex justify-content-between d-block desc">
+										<span>Is product on offer :</span>
+										<span class="fw-bold" [ngClass]="!product.onOffer ? 'text-muted' : 'red-text'">
+											{{product.onOffer ? 'YES' : 'NO'}}
+										</span>
 									</span>
-									<span class="d-block">
-										Offer price : <span class="price"> {{product.offerPrice | currency: 'KES
-											':'symbol':'1.0-2'}}</span>
+									<span class="d-flex justify-content-between d-block desc">
+										<span>Offer price :</span>
+										<span class="fw-bold">
+											{{product.offerPrice | currency: 'KES ':'symbol':'1.0-2'}}</span>
+									</span>
+								</div>
+
+								<div class="pb-3 mb-3">
+									<span class="d-flex justify-content-between desc">
+										<span>Is product currently available :</span>
+										<span class="fw-bold" [ngClass]="product.available ? 'text-muted' : 'red-text'">
+											{{product.available ? 'YES' : 'NO'}}
+										</span>
+									</span>
+									<span class="d-flex justify-content-between desc">
+										<span>Next available date :</span>
+										<span class="fw-bold"> {{(product?.nextAvailableDate | date : 'MMM d, y') ||
+											'N/A'}}</span>
 									</span>
 								</div>
 

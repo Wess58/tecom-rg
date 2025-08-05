@@ -7,19 +7,43 @@ import {
 } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { Router } from '@angular/router';
+import { ActivationEnd, ActivationStart, Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HttpTokenInterceptor implements HttpInterceptor {
-  constructor(private router: Router) { }
+
+  currentUser = JSON.parse(localStorage.getItem('tcmuser') || '{}');
+
+  constructor(private router: Router) {
+    router.events.subscribe((val) => {
+      if (!this.router.routerState.snapshot.url.includes('login') &&
+        (val instanceof ActivationEnd || val instanceof ActivationStart) &&
+        val.snapshot?.data['menuCode']?.length) {
+
+        const hasRoutePermit = val.snapshot.data['menuCode'].some((code: any) => this.currentUser?.role == code
+        );
+
+        // console.log(hasRoutePermit);
+
+        if (!hasRoutePermit) {
+          localStorage.removeItem('tcmuser');
+          localStorage.removeItem('tcmuserStamp');
+          this.router.navigate(['/login']);
+          setTimeout(() => {
+            location.reload();
+          }, 10);
+        }
+      }
+    });
+  }
   intercept(
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     if (
-      req.url.includes('login')
+      req.url.includes('auth')
       // req.url.includes('registration') ||
       // req.url.includes('registration/contact')
     ) {
@@ -38,6 +62,9 @@ export class HttpTokenInterceptor implements HttpInterceptor {
         Authorization: `Basic ${token}`,
       },
     });
+
+    // console.log(token);
+
 
     return next.handle(request).pipe(
       catchError((err) => {

@@ -99,9 +99,22 @@ export class ReportsListComponent implements OnInit {
     )
   }
 
-  callToast():void{
+  callToast(): void {
     this.toastService.info('Generating report ...');
 
+  }
+
+  setDataForEdit(report: any, action: string = 'create'): void {
+    localStorage.setItem('rptjson', JSON.stringify(report));
+    this.toastService.info('Redirecting ...', 1200);
+
+    setTimeout(() => {
+      this.router.navigate(['/create-report'], {
+        queryParams: {
+          type: action
+        }
+      })
+    }, 1000);
   }
 
 

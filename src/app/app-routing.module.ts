@@ -10,28 +10,24 @@ import { LoginComponent } from './components/auth/login/login.component';
 const routes: Routes = [
   {
     path: 'create-report',
-    component: CreateReportComponent
+    component: CreateReportComponent,
   },
-  // {
-  //   path: '**',
-  //   redirectTo: 'reports',
-  //   pathMatch: 'full'
-  // },
   {
     path: 'reports',
-    component: ReportsListComponent
+    component: ReportsListComponent,
   },
   {
     path: 'user-management',
-    component: UsersComponent
+    component: UsersComponent,
+    data: { menuCode: ['SUPER_ADMIN'] }
   },
   {
     path: 'shop-management',
-    component: ShopComponent
+    component: ShopComponent,
   },
   {
     path: 'login',
-    component: LoginComponent
+    component: LoginComponent,
   }
 ];
 

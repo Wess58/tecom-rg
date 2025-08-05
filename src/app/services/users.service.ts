@@ -19,6 +19,7 @@ export class UsersService {
   setPassword(data: any): Observable<any> {
     return this.httpClient.post(`${this.baseUrl}/users/set-password`, data);
   }
+  
 
   getUsers(options: any): Observable<any> {
     return this.httpClient.get(`${this.baseUrl}/users`,
@@ -41,7 +42,7 @@ export class UsersService {
   }
 
   deleteUser(id: number): Observable<any> {
-    return this.httpClient.delete(`${this.baseUrl}/organizations/${id}`);
+    return this.httpClient.delete(`${this.baseUrl}/users/${id}`);
   }
 
   sendEmail(notificationDTO: any): Observable<any> {

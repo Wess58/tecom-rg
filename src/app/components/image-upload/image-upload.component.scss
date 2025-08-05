@@ -1,0 +1,38 @@
+.custom-file-div {
+  border: 3px dashed #e1e1e1;
+  padding: 20px;
+  height: 100px;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  position: relative;
+
+  span {
+    color: #80868b;
+  }
+}
+
+.custom-file-label {
+  width: 84px !important;
+  vertical-align: middle !important;
+  cursor: pointer !important;
+  margin-left: 20px;
+}
+
+.custom-file-input {
+  cursor: pointer !important;
+  height: 100px;
+  width: 100%;
+  position: absolute;
+  top: 0px;
+  right: 0;
+  opacity: 0;
+}
+
+.custom-file-div:hover {
+//   border: 3px dashed #80868b;
+}
+
+.hover-state {
+  background-color: #13d0d522;
+  border: 3px dashed #80868b !important;
+}

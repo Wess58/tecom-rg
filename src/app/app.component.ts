@@ -1,11 +1,17 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
-    selector: 'app-root',
-    templateUrl: './app.component.html',
-    styleUrl: './app.component.scss',
-    standalone: false
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrl: './app.component.scss',
+  standalone: false
 })
 export class AppComponent {
-  title = 'tecom-rg';
+
+  constructor(
+    public router: Router
+  ) {
+
+  }
 }

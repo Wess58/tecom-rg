@@ -125,11 +125,12 @@
 										(click)="generateReport(report?.reportData)">
 										Download
 									</a>
-
-									<!-- <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#reportActionModal"
-										(click)="selectReport(report,'DELETE')" [hidden]="currentReport.email === report.email">
-										Delete
-									</a> -->
+									<a class="dropdown-item" (click)="setDataForEdit(report.reportData)">
+										Make a Copy
+									</a>
+									<a class="dropdown-item" (click)="setDataForEdit(report.reportData,'edit')">
+										Edit
+									</a>
 								</div>
 							</div>
 						</td>

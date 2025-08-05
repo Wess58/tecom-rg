@@ -31,7 +31,7 @@ export class UsersComponent implements OnInit {
     };
     currentUser: any = {};
     emailInvalid: boolean = false;
-    
+
     errorMessage: string = '';
     userActionFail: boolean = false;
     performingAction: boolean = false;
@@ -51,7 +51,7 @@ export class UsersComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
-        this.currentUser = JSON.parse(sessionStorage.getItem('tcmuser') || '{}');
+        this.currentUser = JSON.parse(localStorage.getItem('tcmuser') || '{}');
 
         window.scrollTo({ top: 1, behavior: "smooth" });
 
@@ -116,9 +116,7 @@ export class UsersComponent implements OnInit {
                 next: (res) => {
 
                     this.performingAction = false;
-                    this.closeModal('closeEditModal');
-                    // this.getUsers(this.page);
-                    this.toastService.success('User create request submitted!');
+                    this.setUserPassword('closeEditModal', 'CREATE');
 
                 },
                 error: (error) => {
@@ -144,7 +142,59 @@ export class UsersComponent implements OnInit {
                     this.closeModal('closeEditModal');
                     this.getUsers(this.page);
 
-                    this.toastService.success('User update request submitted!');
+                    this.toastService.success('User updated successfully!');
+                },
+                error: (error) => {
+                    console.log(error);
+                    this.userActionFail = true;
+                    this.performingAction = false;
+                    this.errorMessage = error?.desc ?? 'Please try again in 15 minutes';
+
+                }
+            }
+        )
+    }
+
+    deleteUser(): void {
+        this.performingAction = true;
+        this.userActionFail = false;
+
+        this.usersService.deleteUser(this.user.id).subscribe(
+            {
+                next: (res) => {
+                    this.performingAction = false;
+                    this.closeModal('closeUserActionModal');
+                    this.getUsers(this.page);
+
+                    this.toastService.success('User deleted successfully!');
+                },
+                error: (error) => {
+                    console.log(error);
+                    this.userActionFail = true;
+                    this.performingAction = false;
+                    this.errorMessage = error?.desc ?? 'Please try again in 15 minutes';
+
+                }
+            }
+        )
+    }
+
+    setUserPassword(modalId: string = 'closeSetPasswordModal', action: string = 'SET_PASSWORD'): void {
+        this.performingAction = true;
+        this.userActionFail = false;
+
+        const data = {
+            email: this.user.email,
+            password: this.user.password
+        }
+
+        this.usersService.setPassword(data).subscribe(
+            {
+                next: (res) => {
+                    action !== 'SET_PASSWORD' ? this.getUsers(this.page) : '';
+                    this.performingAction = false;
+                    this.toastService.success('User' + (action === 'SET_PASSWORD' ? 'updated' : 'created') + 'successfully!');
+                    this.closeModal(modalId);
                 },
                 error: (error) => {
                     console.log(error);

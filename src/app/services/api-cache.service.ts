@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 @Injectable({ providedIn: 'root' })
 
 export class ApiCacheService {
-  private cacheDuration = 1 * 60 * 1000; // 5 minutes
+  private cacheDuration = 5 * 60 * 1000; // 5 minutes
 
   set<T>(key: string, data: T): void {
     const record = {

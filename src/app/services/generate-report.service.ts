@@ -3,6 +3,7 @@ import moment from 'moment';
 import jsPDF from "jspdf";
 import { ToastService } from './toast.service';
 import { ReportsService } from './reports.service';
+import { Router } from '@angular/router';
 
 
 
@@ -16,7 +17,8 @@ export class GenerateReportService {
 
   constructor(
     private toastService: ToastService,
-    private reportsService: ReportsService
+    private reportsService: ReportsService,
+    private router: Router
   ) { }
 
 
@@ -84,13 +86,13 @@ export class GenerateReportService {
       doc.setTextColor('#5f6063');
       doc.text('REPORT BY', 5, 28, { align: 'left' });
 
-      const tech = JSON.parse(sessionStorage.getItem('tcmuser') || '{}');
+      const tech = JSON.parse(localStorage.getItem('tcmuser') || '{}');
       // this.technicians.find((tech: any) => +reportData?.tech === tech?.id);
       // console.log(tech);
       doc.setTextColor('#3c4043');
       doc.setFont("Montserrat", 'bold');
       doc.setFontSize(9);
-      doc.text(tech?.title ?? 'N/A', 5, 34.5, { align: 'left' });
+      doc.text(tech?.jobTitle ?? 'N/A', 5, 34.5, { align: 'left' });
       doc.setFont("Montserrat", 'bolder');
       doc.setFontSize(12);
       doc.text(tech?.name?.toUpperCase() ?? 'N/A', 5, 40, { align: 'left' });
@@ -249,12 +251,13 @@ export class GenerateReportService {
 
         const imageSet1 = selectedFiles.slice(0, 2);
 
-        imageSet1.forEach((image: any) => {
-          const x = this.imgPositions[image.index][0];
-          const y = this.imgPositions[image.index][1];
-          const img: any = new Image();
-          img.src = image.image;
-          doc.addImage(img, image.type.split("/")[1], x, y, 80, 50);
+        imageSet1.forEach((image: any, index: number) => {
+          const x = this.imgPositions[index][0];
+          const y = this.imgPositions[index][1];
+          // const img: any = new Image();
+          // img.src = image.blob;
+          // image.blob.type.split("/")[1]
+          doc.addImage(image.previewUrl, 'webp', x, y, 80, 50);
         });
 
         // if (this.selectedFiles.length > 2) {
@@ -358,8 +361,24 @@ export class GenerateReportService {
         this.toastService.success('Report generated successfully!');
 
         if (!isRedownload) {
-          this.reportsService.createReport({ reportData }).subscribe();
+          reportData.media = selectedFiles.map((image: any) => image.uuid);
+
+          const data = {
+            email: reportData.email,
+            customerName: reportData.name,
+            reportData
+          }
+
+          this.reportsService.createReport(data).subscribe();
+
+          setTimeout(() => {
+            this.toastService.info('Redirecting ...', 1500);
+            this.router.navigate(['/reports']);
+          }, 2000);
         }
+        
+        localStorage.removeItem('rptjson');
+
       });
 
       doc = new jsPDF();
