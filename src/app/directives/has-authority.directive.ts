@@ -3,8 +3,8 @@ import { Directive, Input, TemplateRef, ViewContainerRef, OnDestroy } from '@ang
 @Directive({
   selector: '[hasAuthority]',
   standalone: false
-
 })
+
 export class HasAuthorityDirective {
 
   constructor(

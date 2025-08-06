@@ -22,8 +22,8 @@ import { SanitizeFileUrlPipe } from './pipes/sanitize-file-url.pipe';
 import { AppTooltipDirective } from './directives/app-tooltip.directive';
 import { ImageFallbackDirective } from './directives/image-fallback.directive';
 import { StaffFromEmailPipe } from './pipes/staff-from-email.pipe';
-import { HasAuthorityDirective } from './directives/has-authority.directive';
 import { ImageUploadComponent } from './components/image-upload/image-upload.component';
+import { HasAuthorityDirective } from './directives/has-authority.directive';
 
 @NgModule({
   declarations: [
@@ -40,8 +40,8 @@ import { ImageUploadComponent } from './components/image-upload/image-upload.com
     AppTooltipDirective,
     ImageFallbackDirective,
     StaffFromEmailPipe,
-    HasAuthorityDirective,
-    ImageUploadComponent
+    ImageUploadComponent,
+    HasAuthorityDirective
   ],
   imports: [
     BrowserModule,

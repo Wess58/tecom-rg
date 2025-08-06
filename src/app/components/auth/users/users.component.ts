@@ -38,6 +38,7 @@ export class UsersComponent implements OnInit {
 
     statuses: string[] = ['ACTIVE', 'INACTIVE'];
     action: string = '';
+    openPassEye:boolean = false;
 
     page: number = 1;
     itemsPerPage = 20;
@@ -207,12 +208,18 @@ export class UsersComponent implements OnInit {
         )
     }
 
+    showPassword(id:string): void {
+        const passwordInput = document.getElementById(id) as HTMLInputElement;
+        this.openPassEye = !this.openPassEye;
+        passwordInput.type = this.openPassEye ? 'text' : 'password';
+    }
+
+
 
     selectUser(user: any, action: string): void {
         this.user = { ...user };
         this.action = action;
     }
-
 
     validateEmail(): void {
         // console.log(!(/\S+@\S+\.\S+/).test(this.user.email.trim()));
@@ -224,6 +231,7 @@ export class UsersComponent implements OnInit {
         this.user = { role: 'USER' };
         this.performingAction = false;
         this.userActionFail = false;
+        this.openPassEye = false;
     }
 
     closeModal(id: string): void {
