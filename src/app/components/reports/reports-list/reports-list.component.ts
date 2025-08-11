@@ -72,6 +72,8 @@ export class ReportsListComponent implements OnInit {
       sort: 'id,desc',
     }
 
+    
+
     this.router.navigate([], {
       relativeTo: this.activatedRoute,
       queryParams: {
@@ -80,6 +82,7 @@ export class ReportsListComponent implements OnInit {
         // name: this.filters.name?.trim() ?? ''
       },
       queryParamsHandling: 'merge',
+      replaceUrl: !this.activatedRoute.snapshot.queryParams['page']
     });
 
 

@@ -94,6 +94,7 @@ export class ShopComponent implements OnInit {
                 // name: this.filters.name?.trim() ?? ''
             },
             queryParamsHandling: 'merge',
+            replaceUrl: !this.activatedRoute.snapshot.queryParams['page']
         });
 
 
