@@ -247,7 +247,7 @@ export class GenerateReportService {
         doc.setFontSize(12);
         doc.text('Attached images are provided for reference', 7, 210, { align: 'left' });
 
-        // console.log(this.selectedFiles);
+        // console.log(selectedFiles);
 
         const imageSet1 = selectedFiles.slice(0, 2);
 
@@ -257,7 +257,7 @@ export class GenerateReportService {
           // const img: any = new Image();
           // img.src = image.blob;
           // image.blob.type.split("/")[1]
-          doc.addImage(image.previewUrl, 'webp', x, y, 80, 50);
+          doc.addImage(image.previewUrl ?? (window.location.origin + '/api/media/file/' + image?.uuid), 'webp', x, y, 80, 50);
         });
 
         // if (this.selectedFiles.length > 2) {
@@ -376,7 +376,7 @@ export class GenerateReportService {
             this.router.navigate(['/reports']);
           }, 2000);
         }
-        
+
         localStorage.removeItem('rptjson');
 
       });

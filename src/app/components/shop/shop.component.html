@@ -35,46 +35,53 @@
 				</div>
 			</div>
 
-			<!-- 	
 			<span class="filter-text">Filtering options</span>
 			<div class="filter-wrapper">
-	
-				<div class="wrap ms-0">
-					<select class="form-control" name="role" [(ngModel)]="filters.roleId" (change)="getProducts(1)">
-						<option value="">All roles</option>
-						<option *ngFor="let role of roles;index as i" [value]="role.id">{{role.name}} </option>
-					</select>
-				</div>
-	
-				<div class="wrap ms-0">
-					<select class="form-control" name="status" [(ngModel)]="filters.status" (change)="getProducts(1)">
-						<option value="">All statuses</option>
-						<option *ngFor="let status of statuses;index as i" [value]="status">{{status}} </option>
-					</select>
-				</div>
-	
+
 				<div class="wrap">
-					<input type="text" class="form-control" placeholder="name" name="name" [(ngModel)]="filters.name"
+					<input type="text" class="form-control" placeholder="Product name" name="name" [(ngModel)]="filters.name"
 						(keyup.enter)="getProducts(1)" />
 				</div>
-	
+
 				<div class="wrap">
-					<input type="text" class="form-control" placeholder="email" name="email" [(ngModel)]="filters.email"
-						(keyup.enter)="getProducts(1)" />
+					<select class="form-control" name="available" [(ngModel)]="filters.available"
+						(change)="getProducts(1)">
+						<option value="">Select availability</option>
+						<option [value]="true">AVAILABLE</option>
+						<option [value]="false">NOT AVAILABLE</option>
+					</select>
 				</div>
-	
+
 				<div class="wrap">
-					<button class="btn btn-refresh" title="Search products" [disabled]="loadingProducts" (click)="getProducts(1)">
+					<select class="form-control" name="onOffer" [(ngModel)]="filters.onOffer" (change)="getProducts(1)">
+						<option value="">Select offer status</option>
+						<option [value]="true">ON OFFER</option>
+						<option [value]="false">NOT ON OFFER</option>
+					</select>
+				</div>
+
+				<div class="wrap">
+					<select class="form-control" name="hidden" [(ngModel)]="filters.hidden" (change)="getProducts(1)">
+						<option value="">Select hidden status</option>
+						<option [value]="true">HIDDEN</option>
+						<option [value]="false">NOT HIDDEN</option>
+					</select>
+				</div>
+
+
+				<div class="wrap">
+					<button class="btn btn-refresh" title="Search reports" [disabled]="loadingProducts"
+						(click)="getProducts(1)">
 						<span><i class="fa-solid fa-search"></i></span>&nbsp; Search
 					</button>
 				</div>
-	
+
 				<div class="wrap">
 					<button class="btn btn-clear-filters" [disabled]="loadingProducts" (click)="resetFilters()">
 						clear filters
 					</button>
 				</div>
-			</div> -->
+			</div>
 
 			<div class="donut-container" *ngIf="loadingProducts" [@fadeIn]>
 				<div class="donut-wrapper">
@@ -104,7 +111,7 @@
 							<a class="redirect-link d-flex" data-bs-toggle="modal" data-bs-target="#productModal"
 								(click)="selectProduct(product,'VIEW')">
 								<div class="img-holder">
-									<img [src]="(product.coverImage | sanitizeFileUrl)" [alt]="product.name + 'image'"
+									<img [src]="(product.coverImage | sanitizeFileUrl)" [alt]="product.name + ' image'"
 										imageFallback>
 								</div>
 								{{ product.name }}
@@ -252,7 +259,9 @@
 							placeholder="Enter the devices names as comma separated" cols="4"></textarea>
 					</div>
 
-					<app-image-upload [coverImage]="product.coverImage" [inputImages]="productImages" (coverImageEmit)="setCoverImage($event)" (entityImagesEmit)="updateImages($event)" ></app-image-upload>
+					<app-image-upload [coverImage]="product.coverImage" [inputImages]="productImages"
+						(coverImageEmit)="setCoverImage($event)"
+						(entityImagesEmit)="updateImages($event)"></app-image-upload>
 
 					<div class="border-top border-bottom py-4 mb-4">
 
@@ -306,7 +315,8 @@
 				<button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Cancel</button>
 				<button type="button" class="btn btn-submit" (click)="product?.id ? editProduct() : createProduct()"
 					[disabled]="performingAction || !product.name || !product.price || !product.description || !productImages.length">
-					{{performingAction ? (product?.id ? 'Updating ...' : 'Creating ...') : (product?.id ? 'Update' : 'Create')}}
+					{{performingAction ? (product?.id ? 'Updating ...' : 'Creating ...') : (product?.id ? 'Update' :
+					'Create')}}
 				</button>
 			</div>
 		</div>
@@ -367,7 +377,7 @@
 									<span class="icon"><i class="fa-solid fa-arrow-up-from-bracket"></i></span>
 								</button>
 								<div id="carouselExampleIndicators" class="carousel slide">
-									<div class="carousel-indicators top-0 bottom-100" *ngIf="productImages.length > 1">
+									<div class="carousel-indicators" *ngIf="productImages.length > 1">
 										@for (item of productImages; track $index) {
 										<button type="button" data-bs-target="#carouselExampleIndicators"
 											[ngClass]="{'active':$index === currentImageIndex}"

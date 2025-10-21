@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { UsersService } from '../../../services/users.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { style, animate, transition, trigger } from '@angular/animations';
@@ -19,7 +19,7 @@ import { ApiCacheService } from '../../../services/api-cache.service';
     ]),
   ],
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
 
   login: any = {};
   logingIn: boolean = false;
@@ -35,6 +35,12 @@ export class LoginComponent {
     private apiCacheService: ApiCacheService
   ) { }
 
+
+  ngOnInit(): void {
+    if (localStorage.getItem('basicAuth')) {
+      this.router.navigate(['/reports']);
+    }
+  }
 
   loginUser(): void {
     this.authenticationError = false;
@@ -56,7 +62,11 @@ export class LoginComponent {
             delete res.basicAuth;
 
             this.apiCacheService.set('tcmuserStamp', {});
-            this.router.navigate(['/reports']);
+            this.router.navigate(['/reports'],
+              {
+                replaceUrl: true
+              }
+            );
           } else {
             this.errorMessage = 'Your account has been deactivated. Please contact Admin for assistance.';
             this.authenticationError = true;
@@ -65,12 +75,7 @@ export class LoginComponent {
         },
         error: (error) => {
           console.log(error);
-
-          if (error?.error?.code === 401) {
-            this.errorMessage = 'Your account has been deactivated. Please contact Admin for assistance.';
-          } else {
-            this.errorMessage = 'Please check your username or password and try again.';
-          }
+          this.errorMessage = 'Username or password is incorrect. Please try again, or contact the admin for assistance';
 
           this.authenticationError = true;
           this.logingIn = false;

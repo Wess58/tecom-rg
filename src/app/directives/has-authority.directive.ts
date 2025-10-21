@@ -1,7 +1,7 @@
 import { Directive, Input, TemplateRef, ViewContainerRef, OnDestroy } from '@angular/core';
 
 @Directive({
-  selector: '[hasAuthority]',
+  selector: '[hasRole]',
   standalone: false
 })
 

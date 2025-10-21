@@ -69,8 +69,10 @@ export class CreateReportComponent implements OnInit {
 
   ngOnInit(): void {
     window.scroll(0, 0);
-    if (localStorage.getItem('rptjson')) this.reportData = JSON.parse(localStorage.getItem('rptjson') ?? '{}');
-    this.reportData?.media?.length ? this.setImages() : '';
+    if (this.activatedRoute.snapshot.queryParams['type']) {
+      if (localStorage.getItem('rptjson')) this.reportData = JSON.parse(localStorage.getItem('rptjson') ?? '{}');
+      this.reportData?.media?.length ? this.setImages() : '';
+    }
 
     // this.reportData.tech = JSON.parse(localStorage?.getItem('techId') ?? '1');
     // console.log(this.reportData);
@@ -118,9 +120,6 @@ export class CreateReportComponent implements OnInit {
 
 
   onFileChange(event: any): void {
-
-    console.log('here');
-
 
     this.selectedFiles = [...this.selectedFiles, ...event.target.files];
 

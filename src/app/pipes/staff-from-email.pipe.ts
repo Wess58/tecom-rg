@@ -7,7 +7,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class StaffFromEmailPipe implements PipeTransform {
 
   transform(value: string,): string {
-    return value.split('@')[0];
+    return value ? value.split('@')[0] : '';
   }
 
 }

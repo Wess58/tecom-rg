@@ -33,6 +33,12 @@ export class ShopComponent implements OnInit {
         hidden: false,
         onOffer: false
     };
+
+    filters: any = {
+        available: "",
+        onOffer: "",
+        hidden: "",
+    };
     productImages: any[] = [];
     isGrid = false;
 
@@ -62,11 +68,20 @@ export class ShopComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
-        this.currentProduct = JSON.parse(localStorage.getItem('tcmproduct') || '{}');
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        this.setFilterParams();
+    }
 
-        window.scrollTo({ top: 1, behavior: "smooth" });
 
+    setFilterParams(): void {
         this.page = +this.activatedRoute.snapshot.queryParams['page'] || 1;
+
+        this.filters = {
+            name: this.activatedRoute.snapshot.queryParams['name'] ?? '',
+            available: this.activatedRoute.snapshot.queryParams['available'] ?? '',
+            onOffer: this.activatedRoute.snapshot.queryParams['onOffer'] ?? '',
+            hidden: this.activatedRoute.snapshot.queryParams['hidden'] ?? '',
+        }
 
         this.getProducts(this.page);
     }
@@ -79,8 +94,10 @@ export class ShopComponent implements OnInit {
         this.products = [];
 
         const options = {
-            // email: this.filters.email?.trim() ?? '',
-            // status: this.filters.status,
+            name: this.filters.name?.trim() ?? '',
+            available: !this.filters.available ? '' : this.filters.available == 'true',
+            onOffer: !this.filters.onOffer ? '' : this.filters.onOffer == 'true',
+            hidden: !this.filters.hidden ? '' : this.filters.hidden == 'true',
             pageSize: this.itemsPerPage,
             pageNo: this.page - 1,
             sort: 'id,desc',
@@ -90,8 +107,10 @@ export class ShopComponent implements OnInit {
             relativeTo: this.activatedRoute,
             queryParams: {
                 page,
-                // roleId: this.filters.roleId,
-                // name: this.filters.name?.trim() ?? ''
+                name: this.filters.name?.trim() ?? '',
+                available: this.filters.available,
+                onOffer: this.filters.onOffer,
+                hidden: this.filters.hidden,
             },
             queryParamsHandling: 'merge',
             replaceUrl: !this.activatedRoute.snapshot.queryParams['page']
@@ -106,7 +125,7 @@ export class ShopComponent implements OnInit {
                     this.products.forEach((product: any) => {
                         !product?.media?.length ? product.media = [] : '';
                         product?.media.splice(0, 0, product.coverImage);
-                        product.compatibleDevices = product?.compatibleDevices?.join(' , ') || ''; 
+                        product.compatibleDevices = product?.compatibleDevices?.join(' , ') || '';
 
                     });
 
@@ -135,7 +154,7 @@ export class ShopComponent implements OnInit {
 
         this.action = action;
         this.product = Object.assign({}, product);
-        
+
         this.productImages = [];
         this.productImages = JSON.parse(JSON.stringify(
             this.product.media.map((str: string) => (
@@ -203,7 +222,7 @@ export class ShopComponent implements OnInit {
         )
     }
 
-    productFieldsFormatter():any{
+    productFieldsFormatter(): any {
 
         // moment().format('DD/MM/YYYY')
 
@@ -268,6 +287,19 @@ export class ShopComponent implements OnInit {
     closeModal(id: string): void {
         const close: any = document.getElementById(id) as HTMLElement;
         close?.click();
+    }
+
+    resetFilters(): void {
+
+        this.filters = {
+            available: "",
+            onOffer: "",
+            hidden: "",
+            // year: new Date().getFullYear().toString()
+        };
+
+        this.page = 1;
+        this.getProducts(1)
     }
 
 }

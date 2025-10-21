@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg fixed-top" *ngIf="!router.url.includes('login')">
 	<div class="container-fluid">
-		<a class="navbar-brand" routerLink="/">Admin Portal</a>
+		<a class="navbar-brand" routerLink="/reports"><strong>Tecom Advance</strong> . Admin portal</a>
 		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
 			aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
@@ -10,11 +10,13 @@
 				<li class="nav-item" [ngClass]="{'active-nav-item':router.url.includes('reports')}">
 					<a class="nav-link" routerLink="reports">Reports</a>
 				</li>
-				<li class="nav-item" [ngClass]="{'active-nav-item':router.url.includes('user-management')}">
-					<a class="nav-link" routerLink="user-management">Users</a>
-				</li>
+
 				<li class="nav-item" [ngClass]="{'active-nav-item':router.url.includes('shop-management')}">
 					<a class="nav-link" routerLink="shop-management">Products</a>
+				</li>
+
+				<li *hasRole="['SUPER_ADMIN']" class="nav-item" [ngClass]="{'active-nav-item':router.url.includes('user-management')}">
+					<a class="nav-link" routerLink="user-management">Users</a>
 				</li>
 
 				<li class="dropdown border-0 ms-3">

@@ -67,6 +67,7 @@ export class UsersComponent implements OnInit {
 
         this.page = page ?? 1;
         this.users = [];
+        
 
         const options = {
             // roleId: this.filters.roleId,
@@ -112,6 +113,7 @@ export class UsersComponent implements OnInit {
 
         this.performingAction = true;
         this.userActionFail = false;
+        this.user.email = this.user.email.trim();
 
         this.usersService.createUser(this.user).subscribe(
             {
@@ -136,6 +138,9 @@ export class UsersComponent implements OnInit {
     editUser(): void {
         this.performingAction = true;
         this.userActionFail = false;
+
+        this.user.email = this.user.email.trim();
+
 
         this.usersService.updateUser(this.user).subscribe(
             {
@@ -195,7 +200,7 @@ export class UsersComponent implements OnInit {
                 next: (res) => {
                     action !== 'SET_PASSWORD' ? this.getUsers(this.page) : '';
                     this.performingAction = false;
-                    this.toastService.success('User' + (action === 'SET_PASSWORD' ? 'updated' : 'created') + 'successfully!');
+                    this.toastService.success('User ' + (action === 'SET_PASSWORD' ? 'updated' : 'created') + ' successfully!');
                     this.closeModal(modalId);
                 },
                 error: (error) => {

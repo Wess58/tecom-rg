@@ -22,5 +22,9 @@ export class ReportsService {
     return this.httpClient.post(`${this.baseUrl}/reports`, data);
   }
 
+  deleteReport(id: number): Observable<any> {
+    return this.httpClient.delete(`${this.baseUrl}/reports/${id}`);
+  }
+
 
 }

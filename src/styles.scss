@@ -5,7 +5,7 @@
 // ng build --base-href https://wess58.github.io/tecom-rg/ --output-path docs/ && mv docs/browser/* docs/ && rm -rf docs/browser && git add . && git commit -m "docs ready for deployment" && git push
 // PROD
 // ng build &&  mv dist/browser/* dist/ && rm -rf dist/browser
-// @import url('https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+// @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
 :root {
   --app-blue: #13d0d5;
@@ -18,6 +18,7 @@ html {
 
 body {
   font-family: "Montserrat", sans-serif;
+  // font-family: "Inter", sans-serif;
 
   // font-family: "Work Sans", sans-serif;
   font-optical-sizing: auto;
@@ -343,6 +344,77 @@ textarea:hover {
   }
 }
 
+// *******************************
+// FILTERING SECTION STYLING
+// *********************************
+.filter-text {
+  font-size: 0.9rem;
+  font-weight: 500;
+  display: block;
+  margin-bottom: 5px;
+  color: #80868b;
+}
+
+.filter-wrapper {
+  display: flex;
+  width: 100%;
+
+  .wrap {
+    display: inline-block;
+    margin: 0 10px;
+
+    &:first-child {
+      margin-left: 0;
+    }
+  }
+
+  .uneditable-input {
+    background-color: #fff;
+    border: 2px solid #e1e1e1;
+    width: max-content;
+    padding: 5px 10px;
+    border-radius: 7px;
+    position: relative;
+    cursor: pointer;
+
+    .inputsearch {
+      width: 1px !important;
+      height: 1px !important;
+      overflow: hidden;
+      position: absolute;
+      left: 0;
+      top: 15px;
+
+      input {
+        padding: 0 !important;
+        border: none !important;
+      }
+    }
+
+    span {
+      font-size: 0.9rem;
+    }
+
+    small {
+      color: #80868b;
+      font-size: 0.9rem;
+      display: inline-block;
+      margin: 0 5px;
+    }
+  }
+
+  .form-control {
+    width: 230px;
+    padding: 5px 12px !important;
+  }
+
+  .btn-clear-filters {
+    background-color: transparent;
+    color: #80868b;
+    font-size: 0.9rem;
+  }
+}
+
 // ****************************************
 // TABLE STLYING
 // ****************************************
@@ -369,10 +441,11 @@ textarea:hover {
   }
 }
 .table {
+  margin-top: 30px;
   thead {
     th {
       border-top: none;
-      color: #80868b;
+      color: #3c4043;
       font-size: 0.9rem;
       white-space: nowrap !important;
       font-weight: 500;
@@ -625,8 +698,18 @@ textarea:hover {
   }
 }
 
-@media (max-width: 1500px) {
+@media (max-width: 1600px) {
   body {
     zoom: 90%;
+  }
+}
+
+@media (max-width: 1400px) {
+  body {
+    zoom: 86%;
+  }
+
+  .container {
+    min-width: 90%;
   }
 }

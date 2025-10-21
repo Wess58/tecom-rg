@@ -30,9 +30,13 @@ export class ReportsListComponent implements OnInit {
     role: 'USER'
   };
 
+  filters: any = {};
+
   errorMessage: string = '';
   reportActionFail: boolean = false;
   performingAction: boolean = false;
+  action: string = '';
+
 
   page: number = 1;
   itemsPerPage = 20;
@@ -50,13 +54,25 @@ export class ReportsListComponent implements OnInit {
 
   ngOnInit(): void {
 
-    window.scrollTo({ top: 1, behavior: "smooth" });
+    window.scrollTo({ top: 0, behavior: "smooth" });
 
+    this.setFilterParams();
+
+  }
+
+
+  setFilterParams(): void {
     this.page = +this.activatedRoute.snapshot.queryParams['page'] || 1;
+
+    this.filters = {
+      name: this.activatedRoute.snapshot.queryParams['name'] ?? '',
+      email: this.activatedRoute.snapshot.queryParams['email'] ?? '',
+    }
 
     this.getReports(this.page);
 
   }
+
 
 
   getReports(page: number): void {
@@ -66,20 +82,19 @@ export class ReportsListComponent implements OnInit {
     this.reports = [];
 
     const options = {
-      // status: this.filters.status,
       pageSize: this.itemsPerPage,
       pageNo: this.page - 1,
       sort: 'id,desc',
+      name: this.filters.name?.trim() ?? '',
+      email: this.filters.email?.trim() ?? '',
     }
-
-    
 
     this.router.navigate([], {
       relativeTo: this.activatedRoute,
       queryParams: {
         page,
-        // status: this.filters.status,
-        // name: this.filters.name?.trim() ?? ''
+        name: this.filters.name?.trim() ?? '',
+        email: this.filters.email?.trim() ?? '',
       },
       queryParamsHandling: 'merge',
       replaceUrl: !this.activatedRoute.snapshot.queryParams['page']
@@ -104,8 +119,13 @@ export class ReportsListComponent implements OnInit {
 
   callToast(): void {
     this.toastService.info('Generating report ...');
-
   }
+
+  selectReport(report: any, action: string): void {
+    this.action = action;
+    this.report = Object.assign({}, report);
+  }
+
 
   setDataForEdit(report: any, action: string = 'create'): void {
     localStorage.setItem('rptjson', JSON.stringify(report));
@@ -131,6 +151,46 @@ export class ReportsListComponent implements OnInit {
       this.generateReportService.generateReport(report, selectedFiles, true);
     }, 1500);
 
+  }
+
+  deleteReport(): void {
+    this.performingAction = true;
+    this.reportActionFail = false;
+
+    this.reportsService.deleteReport(this.report.id).subscribe(
+      {
+        next: (res) => {
+          this.performingAction = false;
+          this.closeModal('closeReportActionModal');
+          this.getReports(this.page);
+
+          this.toastService.success('Report deleted successfully!');
+        },
+        error: (error) => {
+          console.log(error);
+          this.reportActionFail = true;
+          this.performingAction = false;
+          this.errorMessage = error?.desc ?? 'Please try again in 15 minutes';
+
+        }
+      }
+    )
+  }
+
+  closeModal(id: string): void {
+    const close: any = document.getElementById(id) as HTMLElement;
+    close?.click();
+  }
+
+
+  resetFilters(): void {
+
+    this.filters = {
+      // year: new Date().getFullYear().toString()
+    };
+
+    this.page = 1;
+    this.getReports(1)
   }
 
 

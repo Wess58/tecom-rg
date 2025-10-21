@@ -13,19 +13,19 @@ import { ActivationEnd, ActivationStart, Router } from '@angular/router';
   providedIn: 'root',
 })
 export class HttpTokenInterceptor implements HttpInterceptor {
-
-  currentUser = JSON.parse(localStorage.getItem('tcmuser') || '{}');
+  currentUser: any;
 
   constructor(private router: Router) {
     router.events.subscribe((val) => {
+
+      this.currentUser = JSON.parse(localStorage.getItem('tcmuser') || '{}');
+
       if (!this.router.routerState.snapshot.url.includes('login') &&
         (val instanceof ActivationEnd || val instanceof ActivationStart) &&
         val.snapshot?.data['menuCode']?.length) {
 
         const hasRoutePermit = val.snapshot.data['menuCode'].some((code: any) => this.currentUser?.role == code
         );
-
-        // console.log(hasRoutePermit);
 
         if (!hasRoutePermit) {
           localStorage.removeItem('tcmuser');
