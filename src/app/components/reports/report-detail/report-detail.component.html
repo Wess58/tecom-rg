@@ -1,0 +1,50 @@
+<div class="modal fade" id="reportViewModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+		<div class="modal-content" *ngIf="report.date">
+			<div class="modal-header">
+				<h4 class="modal-title" id="exampleModalLabel">Report details </h4>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+					id="closeReportViewModal"></button>
+			</div>
+			<div class="modal-body py-4">
+
+				<div class="tabular-layout">
+					<div class="tabular-item" *ngFor="let data of details;index as i">
+						<div class="d-flex justify-content-between">
+							<span class="title">{{data.title}} </span>
+							<span class="value" *ngIf="!data.isStatus">{{!data.unformarttedDate ? (data.value ?? '—') :
+								(data.value | date : (data.hasNoTime ? 'MMM d y' : 'MMM d y , HH:mm')) }} </span>
+							<span class="badge" *ngIf="data.isStatus" [ngClass]="{
+								'badge-primary': data.value === 'NEW',
+								'badge-success': data.value === 'ACTIVE',
+								'badge-danger':  data.value === 'DELETED'
+							}">{{ data.value }}</span>
+						</div>
+					</div>
+				</div>
+
+				<span class="instruction-title">Report images</span>
+
+				<div class="tabular-layout-images">
+					@for (file of images; track $index) {
+					<div class="image-item">
+						<!-- [ngClass]="{'no-pointer-events':isCreate}" [attr.data-bs-toggle]="isCreate ? '' : 'modal'"
+						data-bs-target="#assetImageModal" -->
+						<img class="d-block w-100" [src]="file.uuid ? (file.uuid | sanitizeFileUrl) : file.previewUrl"
+							alt="blob" imageFallback />
+					</div>
+					}
+				</div>
+
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Close</button>
+
+				<!-- <button type="button" class="btn btn-submit" 
+					(click)="createRepprt('closeReportViewModal')" *ngIf="isCreate"
+					[disabled]="performingAction">{{action |
+					titlecase}}</button> -->
+			</div>
+		</div>
+	</div>
+</div>

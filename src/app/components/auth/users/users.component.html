@@ -188,16 +188,7 @@
 					id="closeEditModal"></button>
 			</div>
 			<div class="modal-body px-4">
-
-
-				<!-- <small class="request-desc d-flex">
-					<strong class="red-text d-block me-2">*</strong>
-					<span>
-						This operation is treated as <strong>a request</strong>.
-						This means it will be <strong>reviewed and processed</strong> after submission.
-					</span>
-				</small> -->
-
+				
 				<div class="alert alert-danger" *ngIf="userActionFail" [@fadeIn]>
 					<strong>Failed to {{(user?.id ? 'edit' : 'create')}} user! </strong> {{errorMessage}}.
 				</div>

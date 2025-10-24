@@ -176,7 +176,7 @@ export class ShopComponent implements OnInit {
         this.performingAction = true;
         this.productActionFail = false;
 
-        this.productsService.createProduct(this.productFieldsFormatter).subscribe(
+        this.productsService.createProduct(this.productFieldsFormatter()).subscribe(
             {
                 next: (res) => {
 

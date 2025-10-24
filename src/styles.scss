@@ -578,6 +578,68 @@ textarea:hover {
   }
 }
 
+
+// CUSTOM TABULAR STYLING
+// ***********************************
+
+.tabular-layout {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, calc(50% - 5px));
+  // gap: 0 10px;
+  margin-bottom: 20px;
+
+  .tabular-item {
+    padding: 15px 10px;
+    border-bottom: 1px solid #f1f1f1;
+
+    &:nth-child(odd) {
+      border-right: 1px solid #e1e1e1;
+    }
+
+    &:hover {
+      background-color: #f1f1f155;
+      transition: background-color 0.2s;
+    }
+
+    .title {
+      font-weight: 500;
+      font-size: 0.9rem;
+      color: #3c4043;
+      max-width: 40%;
+      display: block;
+    }
+
+    .value {
+      color: #5f6063;
+      font-size: 0.9rem;
+      max-width: 60%;
+      display: block;
+      text-align: right;
+    }
+  }
+}
+
+.tabular-layout-images {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 150px);
+  gap: 0 15px;
+  margin: 20px 0;
+  padding-left: 10px;
+
+  .image-item {
+    height: 150px;
+    cursor: pointer;
+
+    img {
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+      border: 1px solid #e1e1e1;
+    }
+  }
+}
+
 // ***************************************1
 // MODAL STYLING
 // ***********************************************

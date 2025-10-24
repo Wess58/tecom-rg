@@ -24,6 +24,7 @@ import { ImageFallbackDirective } from './directives/image-fallback.directive';
 import { StaffFromEmailPipe } from './pipes/staff-from-email.pipe';
 import { ImageUploadComponent } from './components/image-upload/image-upload.component';
 import { HasAuthorityDirective } from './directives/has-authority.directive';
+import { ReportDetailComponent } from './components/reports/report-detail/report-detail.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { HasAuthorityDirective } from './directives/has-authority.directive';
     ImageFallbackDirective,
     StaffFromEmailPipe,
     ImageUploadComponent,
-    HasAuthorityDirective
+    HasAuthorityDirective,
+    ReportDetailComponent
   ],
   imports: [
     BrowserModule,

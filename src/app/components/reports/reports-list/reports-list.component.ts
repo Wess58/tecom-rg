@@ -25,10 +25,9 @@ import { GenerateReportService } from '../../../services/generate-report.service
 export class ReportsListComponent implements OnInit {
 
   loadingReports = false;
-  reports: any = [];
-  report: any = {
-    role: 'USER'
-  };
+  reports: any[] = [];
+  report: any = {};
+  reportImages: any[] = [];
 
   filters: any = {};
 
@@ -122,8 +121,29 @@ export class ReportsListComponent implements OnInit {
   }
 
   selectReport(report: any, action: string): void {
+    
+    console.log(report);
     this.action = action;
-    this.report = Object.assign({}, report);
+    this.report = Object.assign({}, report?.reportData);
+    this.report.createdBy = report.createdBy;
+    this.report.createdOn = report.createdOn;
+
+    console.log(this.report);
+
+    this.reportImages = [];
+    if (action === 'VIEW' && this.report.media?.length) {
+      this.reportImages = JSON.parse(JSON.stringify(
+        this.report.media.map((str: string) => (
+          {
+            // previewUrl: window.location.origin + '/api/media/file/' + str,
+            uuid: str,
+            name: str,
+            uploaded: true,
+            compressed: true
+          }
+        ))
+      ));
+    }
   }
 
 

@@ -26,5 +26,8 @@ export class ReportsService {
     return this.httpClient.delete(`${this.baseUrl}/reports/${id}`);
   }
 
+  formatCurrency(amount: string): string {
+    return String(amount)?.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
 
 }
