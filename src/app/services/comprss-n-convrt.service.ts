@@ -48,7 +48,7 @@ export class ComprssNConvrtService {
       }
 
       file.compressing = false;
-      this.uploadFile(file);
+      if (file) this.uploadFile(file);
 
     } catch (e) {
       file.failed = true;
@@ -130,7 +130,7 @@ export class ComprssNConvrtService {
             file.uploading = false;
             file.failCount += 1;
             if (file.failCount < 2) {
-              this.uploadFile(file);
+              if(file) this.uploadFile(file);
             }
           }
         });
