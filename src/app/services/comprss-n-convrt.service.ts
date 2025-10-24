@@ -27,7 +27,7 @@ export class ComprssNConvrtService {
     try {
 
 
-      if (!file.compressed && !file.uploaded) {
+      if (!file.compressed && !file.uploaded && file.size > (150 * 1024)) {
         // ********************
         // CURRENT COMPRESSION JPEG TO WEBP -> 14MB - 905kb - 107kb
         this.toastService.info('Compressing file ...');
@@ -108,13 +108,19 @@ export class ComprssNConvrtService {
             //   file.progress = Math.round((100 * res.loaded) / res.total);
             // } else 
             if (res instanceof HttpResponse) {
-              // console.log(res);
-              file.uuid = res.body[0].name;
-              file.mediaId = res.body[0].mediaId;
-              file.failed = false;
-              file.uploaded = true;
               file.uploading = false;
-              this.toastService.success('File uploaded successfully!');
+
+              if (res.body[0]?.uploadStatus === 'OK') {
+                file.uuid = res.body[0].name;
+                file.mediaId = res.body[0].mediaId;
+                file.uploaded = true;
+                this.toastService.success('File uploaded successfully!');
+              } else {
+                file.uploaded = false;
+                file.failed = true;
+                file.description = res.body.description || 'Upload failed. Please try again.';
+                this.toastService.error(file?.description);
+              }
               // console.log(file);
             }
           },

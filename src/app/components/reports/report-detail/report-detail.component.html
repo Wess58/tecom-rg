@@ -40,10 +40,8 @@
 			<div class="modal-footer">
 				<button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Close</button>
 
-				<!-- <button type="button" class="btn btn-submit" 
-					(click)="createRepprt('closeReportViewModal')" *ngIf="isCreate"
-					[disabled]="performingAction">{{action |
-					titlecase}}</button> -->
+				<button type="button" class="btn btn-submit" (click)="createReport()"
+					*ngIf="isCreate" [disabled]="creating"> {{!creating ? 'Submit & generate' : 'Generating...'}} </button>
 			</div>
 		</div>
 	</div>

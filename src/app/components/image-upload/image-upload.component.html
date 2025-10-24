@@ -1,12 +1,9 @@
 <!-- FILES UPLOAD INPUT  -->
-
-
-
 <div class="border-top py-4 mt-4">
 	<div class="d-flex justify-content-between align-items-center mb-3">
 		<h5 class="instruction-title mb-0">{{title}}</h5>
 
-		<button type="button" class="btn btn-refresh" (click)="openUploadDialog()">Upload</button>
+		<button type="button" class="btn btn-refresh" (click)="openUploadDialog()">Select images</button>
 	</div>
 
 
@@ -45,19 +42,30 @@
 			[ngClass]="{ 'duplicate-error': file.duplicate, 'upload-success': file.uploaded, 'upload-error': file.failed }">
 
 			<div class="product-content">
-				<div class="terms-checkbox cursor-pointer" appTooltip="Set as product cover image"
+				<div class="terms-checkbox cursor-pointer" appTooltip="Set as cover image"
 					*ngIf="showSetCoverImage">
 					<input type="checkbox" [name]="'coverImage-' + (i+1)" [checked]="coverImage === file.uuid"
 						(change)="setCoverImage(file)"
 						[disabled]="disableIfFileActivity() || file.duplicate || !file.uploaded" />
 				</div>
 				<div class="image-item">
-					<img class="d-block w-100"
-						[src]="inputImages.length ? (file.uuid | sanitizeFileUrl) : file.previewUrl" alt="blob"
-						imageFallback />
+					<img class="d-block w-100" [src]="file.uuid ? (file.uuid | sanitizeFileUrl) : file.previewUrl"
+						alt="blob" imageFallback />
 				</div>
 
-				<span class="title">{{ file.name }}</span>
+				<div>
+
+					<span class="title fw-bold">
+						{{ ((file?.size <= (150 * 1024) || file?.wrongFormat) ? file?.size : file?.blob?.size) | fileSize }} </span>
+
+
+							<span class="title red-text" *ngIf="file?.wrongFormat"> unsupported file format </span>
+				</div>
+
+
+				<!-- {{ file.name }} -->
+				<!-- size- {{file?.size | fileSize}} -->
+				<!-- <div class="progress-bar-animated" [style.width.%]="file.progress"></div> -->
 			</div>
 
 

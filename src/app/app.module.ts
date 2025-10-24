@@ -25,6 +25,8 @@ import { StaffFromEmailPipe } from './pipes/staff-from-email.pipe';
 import { ImageUploadComponent } from './components/image-upload/image-upload.component';
 import { HasAuthorityDirective } from './directives/has-authority.directive';
 import { ReportDetailComponent } from './components/reports/report-detail/report-detail.component';
+import { InputCommaFormatDirective } from './directives/input-comma-format.directive';
+import { FileSizePipe } from './pipes/file-size.pipe';
 
 @NgModule({
   declarations: [
@@ -43,7 +45,9 @@ import { ReportDetailComponent } from './components/reports/report-detail/report
     StaffFromEmailPipe,
     ImageUploadComponent,
     HasAuthorityDirective,
-    ReportDetailComponent
+    ReportDetailComponent,
+    InputCommaFormatDirective,
+    FileSizePipe
   ],
   imports: [
     BrowserModule,

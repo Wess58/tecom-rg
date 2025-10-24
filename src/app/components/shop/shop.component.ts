@@ -6,6 +6,8 @@ import { HttpEventType, HttpResponse } from '@angular/common/http';
 import { ProductsService } from '../../services/products.service';
 import { ToastService } from '../../services/toast.service';
 import moment from 'moment';
+import { ReportsService } from '../../services/reports.service';
+
 
 @Component({
     selector: 'app-shop',
@@ -65,6 +67,7 @@ export class ShopComponent implements OnInit {
         private activatedRoute: ActivatedRoute,
         private productsService: ProductsService,
         private toastService: ToastService,
+        private reportsService: ReportsService
     ) { }
 
     ngOnInit(): void {
@@ -155,18 +158,26 @@ export class ShopComponent implements OnInit {
         this.action = action;
         this.product = Object.assign({}, product);
 
+        if (action === 'EDIT') {
+            this.product.price = this.reportsService.formatCurrency(this.product.price ?? '');
+            this.product.offerPrice = this.reportsService.formatCurrency(this.product.offerPrice ?? '');
+            this.product.inventoryCount = this.reportsService.formatCurrency(this.product.inventoryCount ?? '');
+        }
+
         this.productImages = [];
-        this.productImages = JSON.parse(JSON.stringify(
-            this.product.media.map((str: string) => (
-                {
-                    // previewUrl: window.location.origin + '/api/media/file/' + str,
-                    uuid: str,
-                    name: str,
-                    uploaded: true,
-                    compressed: true
-                }
-            ))
-        ));
+        if (this.product?.media?.length) {
+            this.productImages = JSON.parse(JSON.stringify(
+                this.product.media.map((str: string) => (
+                    {
+                        // previewUrl: window.location.origin + '/api/media/file/' + str,
+                        uuid: str,
+                        name: str,
+                        uploaded: true,
+                        compressed: true
+                    }
+                ))
+            ));
+        }
 
     }
 
@@ -227,19 +238,25 @@ export class ShopComponent implements OnInit {
         // moment().format('DD/MM/YYYY')
 
         const product = Object.assign({}, this.product);
-        product.price = +product.price;
-        product.offerPrice = +product.offerPrice || 0;
-        product.inventoryCount = +product.inventoryCount || 0;
+
+        // product.price = +product.price;
+        product.price = product?.price ? +(product?.price?.replace(/,/g, '')) : 0;
+        product.offerPrice = product?.offerPrice ? +(product?.offerPrice?.replace(/,/g, '')) : 0;
+        // product.inventoryCount = +product.inventoryCount || 0;
+        product.inventoryCount = product?.inventoryCount ? +(product?.inventoryCount?.replace(/,/g, '')) : 0;
+
 
         !product?.coverImage?.length ? product.coverImage = this.productImages[0].uuid : '';
         product.media = this.productImages.filter((image: any) => image.uuid !== product.coverImage).map((image: any) => image.uuid);
-        product.compatibleDevices = product.compatibleDevices.split(',').map((str: string) => str.trim());
+        if (product?.compatibleDevices?.length) product.compatibleDevices = product.compatibleDevices.split(',').map((str: string) => str.trim());
 
         return product;
     }
 
     changeProductState(): void {
-        this.product.hidden = !this.product.hidden;
+        this.action === 'AVAILABLE' ?
+            this.product.available = true :
+            this.product.hidden = !this.product.hidden;
 
         this.editProduct('closeProductActionModal');
     }

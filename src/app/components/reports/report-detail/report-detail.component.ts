@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { ReportsService } from '../../../services/reports.service';
 
 
@@ -11,11 +11,14 @@ import { ReportsService } from '../../../services/reports.service';
 export class ReportDetailComponent implements OnChanges {
 
   details: any = [];
-
+  creating = false;
 
   @Input() report: any = {};
   @Input() images: any[] = [];
   @Input() isCreate: boolean = false;
+
+  @Output() generateReportEmit = new EventEmitter<any[]>();
+
 
   constructor(
     private reportsService: ReportsService
@@ -24,10 +27,14 @@ export class ReportDetailComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['report']) {
-      console.log(this.report);
-      
+      this.creating = false;
       this.createRecordDetailLayout()
     }
+  }
+
+  createReport():void{
+    this.creating = true;
+    this.generateReportEmit.emit();
   }
 
 

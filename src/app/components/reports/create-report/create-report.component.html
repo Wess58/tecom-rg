@@ -306,13 +306,11 @@
 
 
 				<div class="text-end">
-					<button class="btn btn-generate" [disabled]="emailInvalid" (click)="generateReport()"> Generate
+					<button class="btn btn-generate" data-bs-toggle="modal" data-bs-target="#reportViewModal"
+						[disabled]="emailInvalid"> Verify
 						report
 					</button>
-
 				</div>
-
-
 			</form>
 
 		</div>
@@ -320,29 +318,13 @@
 </div>
 
 
-
-<!-- <div id="content" style="background-color: red;border: 2px solid #000;border-radius: 20px;" hidden>
-	<h3 class="d-block mb-5" style="font-size: 12px;">THis is the heading </h3>
-	<p style="border-bottom: 2px solid #000;">the next thing now is now ging to be very long coz I wan to see where the
-		whting ibe inf full jbsc ds c</p>
-
-	<div class="d-flex justify-content-between">
-		<div>
-			<span class="d-block">{{reportData.techName}}</span>
-			<span class="d-block">254792553595</span>
-			<span class="d-block">tecomadvance9gmail</span>
-		</div>
-
-		<div class="text-end">
-			<span class="d-block">{{reportData.name}} </span>
-			<span class="d-block">{{reportData.phone}} </span>
-			<span class="d-block">{{reportData.email}} </span>
-		</div>
-	</div>
-
-</div> -->
+<!-- REPORT DETAIL MODAL  -->
+<app-report-detail [report]="reportData" [images]="selectedFiles" (generateReportEmit)="generateReport()"
+	[isCreate]="true"></app-report-detail>
 
 
+
+<!-- View image modal  -->
 <div class="modal fade" id="viewImageModal" tabindex="-1" aria-labelledby="viewImageModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-lg modal-dialog-centered">
 		<div class="modal-content">

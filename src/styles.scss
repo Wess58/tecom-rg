@@ -621,13 +621,13 @@ textarea:hover {
 
 .tabular-layout-images {
   display: grid;
-  grid-template-columns: repeat(auto-fill, 150px);
+  grid-template-columns: repeat(auto-fill, 200px);
   gap: 0 15px;
   margin: 20px 0;
   padding-left: 10px;
 
   .image-item {
-    height: 150px;
+    height: 200px;
     cursor: pointer;
 
     img {

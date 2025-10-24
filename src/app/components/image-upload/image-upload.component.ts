@@ -37,6 +37,7 @@ export class ImageUploadComponent implements OnChanges {
   entityImages: any = [];
   fileKeys = FILE_BORDER_KEYS;
 
+
   constructor(
     private comprssNConvrtService: ComprssNConvrtService,
   ) { }
@@ -83,7 +84,10 @@ export class ImageUploadComponent implements OnChanges {
     });
 
     this.entityImages = [...this.entityImages, ...[...event.target.files]].slice(0, this.limit);
+    // filter((file: any) => !file.wrongFormat)
     
+    (event.target as HTMLInputElement).value = '';
+
     this.entityImages.forEach((file: any, index: number) => {
 
       if (!file.uploaded && !file.compressed && !file.wrongFormat) {

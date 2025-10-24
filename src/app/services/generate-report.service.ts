@@ -29,19 +29,6 @@ export class GenerateReportService {
 
     setTimeout(() => {
       let doc: any = new jsPDF();
-      // let div:any = document.getElementById('testDiv');
-      // console.log(div);
-
-      // const specialElementHandlers:any = {
-      //   '#editor': function (element:any, renderer:any) {
-      //     return true;
-      //   }
-      // };
-
-      // doc.fromHTML(div.html(), 15, 15, {
-      //   'width': 190,
-      //   'elementHandlers': specialElementHandlers
-      // }); 
 
       // FONT INJECTION 
       doc.addFont("assets/fonts/montserrat/Montserrat-normal-400.ttf", "Montserrat", "normal");
@@ -370,8 +357,12 @@ export class GenerateReportService {
           }
 
           this.reportsService.createReport(data).subscribe();
+          
+          const close: any = document.getElementById('closeReportViewModal') as HTMLElement;
+          close?.click();
 
           setTimeout(() => {
+
             this.toastService.info('Redirecting ...', 1500);
             this.router.navigate(['/reports']);
           }, 2000);

@@ -42,20 +42,6 @@ export class CreateReportComponent implements OnInit {
   imgPositions = [[15, 215], [110, 215], [15, 10], [110, 10]]; // x , y image placement coordinates
   deviceTypes: string[] = ['Phone', 'Laptop', 'CPU', 'Monitor', 'Router', 'Switch', 'Printer', 'UPS', 'ECU', 'Key Fob'];
   issueTypes: string[] = ['Water Spill', 'Impaired', 'Malfunctioning', 'Dead', 'Unresponsive', 'Bricked', 'Crashed', 'Power failure'];
-  technicians: any = [
-    {
-      title: 'Electronics & ICT Diagnostic Engineer',
-      name: 'Isaac K.N',
-      email: 'support@tecomadvance.com',
-      id: 1
-    },
-    {
-      title: 'Technical Support Engineer',
-      name: 'Kennedy M.K',
-      email: 'kennedy@tecomadvance.com',
-      id: 2
-    }
-  ];
 
   repairTimeUnits: string[] = ['mins', 'hours', 'days', 'weeks', 'months', 'years'];
   action: string = 'create';
@@ -98,7 +84,6 @@ export class CreateReportComponent implements OnInit {
   }
 
   validateEmail(): void {
-    // console.log(!(/\S+@\S+\.\S+/).test(this.user.email.trim()));
     this.emailInvalid = this.reportData.email && !(/\S+@\S+\.\S+/).test(this.reportData.email);
   }
 
@@ -109,8 +94,6 @@ export class CreateReportComponent implements OnInit {
 
 
   isFieldEmpty(): boolean {
-    // console.log('here');
-
     return this.emailInvalid || !this.reportData.name || !this.reportData.phone ||
       !this.reportData.email || !this.reportData.brand || !this.reportData.imei || !this.reportData.accessories
       || !this.reportData.reportedIssue || !this.reportData.diagnosisSummary || !this.reportData.fix ||

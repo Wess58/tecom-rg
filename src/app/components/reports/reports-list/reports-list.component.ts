@@ -122,13 +122,13 @@ export class ReportsListComponent implements OnInit {
 
   selectReport(report: any, action: string): void {
     
-    console.log(report);
     this.action = action;
     this.report = Object.assign({}, report?.reportData);
+
+    if (action == 'DELETE') this.report.id = report.id;
+    
     this.report.createdBy = report.createdBy;
     this.report.createdOn = report.createdOn;
-
-    console.log(this.report);
 
     this.reportImages = [];
     if (action === 'VIEW' && this.report.media?.length) {
