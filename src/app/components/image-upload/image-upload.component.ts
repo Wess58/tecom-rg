@@ -118,8 +118,11 @@ export class ImageUploadComponent implements OnChanges {
     this.coverImageEmit.emit(file.uuid);
   }
 
-  removeFileFromList(index: number): void {
-    this.checkForMoreDuplicates(this.entityImages[index]);
+  removeFileFromList(index: number,duplicate:boolean = false): void {
+    console.log(duplicate);
+    
+    if(!duplicate) this.checkForMoreDuplicates(this.entityImages[index]);
+    
     setTimeout(() => {
       this.entityImages.splice(index, 1);
     }, 100);

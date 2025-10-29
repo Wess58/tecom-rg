@@ -247,7 +247,7 @@ export class ShopComponent implements OnInit {
 
 
         !product?.coverImage?.length ? product.coverImage = this.productImages[0].uuid : '';
-        product.media = this.productImages.filter((image: any) => image.uuid !== product.coverImage).map((image: any) => image.uuid);
+        product.media = this.productImages.filter((image: any) => image.uuid && image.uuid !== product.coverImage).map((image: any) => image.uuid);
         if (product?.compatibleDevices?.length) product.compatibleDevices = product.compatibleDevices.split(',').map((str: string) => str.trim());
 
         return product;

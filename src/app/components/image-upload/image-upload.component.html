@@ -75,7 +75,7 @@
 					<i class="fa-solid fa-rotate-right"></i>
 				</span>
 				<span class="icon" appTooltip="Remove from list" tooltipPosition="left"
-					*ngIf="!file.uploading && !file.compressing" [@fadeIn] (click)="removeFileFromList(i)">
+					*ngIf="!file.uploading && !file.compressing" [@fadeIn] (click)="removeFileFromList(i,file.duplicate)">
 					<i class="fa-solid fa-trash-can"></i>
 				</span>
 				<span class="spinner-icon" [appTooltip]="file.compressing ? 'Compressing ...' : 'Uploading ...'"

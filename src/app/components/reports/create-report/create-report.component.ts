@@ -198,9 +198,10 @@ export class CreateReportComponent implements OnInit {
 
   generateReport(): void {
     this.toastService.info('Generating report ...');
+    const images = this.selectedFiles.filter((img: any) => img.uuid);
 
     setTimeout(() => {
-      this.generateReportService.generateReport(this.reportData, this.selectedFiles);
+      this.generateReportService.generateReport(this.reportData, images);
     }, 1500);
 
   }

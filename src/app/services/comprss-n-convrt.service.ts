@@ -48,9 +48,11 @@ export class ComprssNConvrtService {
       }
 
       file.compressing = false;
-      if (file) this.uploadFile(file);
+      this.uploadFile(file);
 
     } catch (e) {
+      console.log(e);
+
       file.failed = true;
     }
   }
@@ -91,15 +93,19 @@ export class ComprssNConvrtService {
     if (!file.uploaded && !file.duplicate) {
       file.failed = false;
       file.uploading = true;
+      var namedFile!: File;
 
-      const namedFile = new File(
-        [file.blob],
-        file.fileName + '.webp',
-        { type: file.blob.type }
-      );
+
+      if (file.blob) {
+        namedFile = new File(
+          [file.blob],
+          file.fileName + '.webp',
+          { type: file.blob.type }
+        );
+      }
 
       const formData = new FormData();
-      formData.append('file', namedFile);
+      formData.append('file', file.blob ? namedFile : file);
 
       this.productsService.uploadFile(formData).subscribe(
         {
@@ -130,7 +136,7 @@ export class ComprssNConvrtService {
             file.uploading = false;
             file.failCount += 1;
             if (file.failCount < 2) {
-              if(file) this.uploadFile(file);
+              this.uploadFile(file);
             }
           }
         });
