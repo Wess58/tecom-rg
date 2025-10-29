@@ -427,8 +427,8 @@
 
 
 								<h5 class="section-desc"> Compatible devices </h5>
-								<span class="d-block desc pb-3 mb-3  border-bottom">
-									{{product?.compatibleDevices}}
+								<span class="d-block desc pb-3 mb-3  border-bottom" [ngClass]="{'red-text':!product?.compatibleDevices}">
+									{{product?.compatibleDevices || 'Not set'}}
 								</span>
 
 

@@ -238,17 +238,17 @@ export class ShopComponent implements OnInit {
         // moment().format('DD/MM/YYYY')
 
         const product = Object.assign({}, this.product);
+        // console.log(product);
 
-        // product.price = +product.price;
-        product.price = product?.price ? +(product?.price?.replace(/,/g, '')) : 0;
-        product.offerPrice = product?.offerPrice ? +(product?.offerPrice?.replace(/,/g, '')) : 0;
+        product.price = +(String(product?.price)?.replace(/,/g, '')) || 0;
+        product.offerPrice = +(String(product?.offerPrice)?.replace(/,/g, '')) || 0;
         // product.inventoryCount = +product.inventoryCount || 0;
-        product.inventoryCount = product?.inventoryCount ? +(product?.inventoryCount?.replace(/,/g, '')) : 0;
+        product.inventoryCount = +(String(product?.inventoryCount)?.replace(/,/g, '')) || 0;
 
 
         !product?.coverImage?.length ? product.coverImage = this.productImages[0].uuid : '';
         product.media = this.productImages.filter((image: any) => image.uuid && image.uuid !== product.coverImage).map((image: any) => image.uuid);
-        if (product?.compatibleDevices?.length) product.compatibleDevices = product.compatibleDevices.split(',').map((str: string) => str.trim());
+        !product?.compatibleDevices?.length ? product.compatibleDevices = [] : product.compatibleDevices = product.compatibleDevices.split(',').map((str: string) => str.trim());
 
         return product;
     }
