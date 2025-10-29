@@ -123,6 +123,9 @@ export class ImageUploadComponent implements OnChanges {
     
     setTimeout(() => {
       this.entityImages.splice(index, 1);
+      console.log(this.entityImages);
+      
+      this.entityImagesEmit.emit(this.entityImages);
     }, 100);
   }
 
