@@ -427,7 +427,8 @@
 
 
 								<h5 class="section-desc"> Compatible devices </h5>
-								<span class="d-block desc pb-3 mb-3  border-bottom" [ngClass]="{'red-text':!product?.compatibleDevices}">
+								<span class="d-block desc pb-3 mb-3  border-bottom"
+									[ngClass]="{'red-text':!product?.compatibleDevices}">
 									{{product?.compatibleDevices || 'Not set'}}
 								</span>
 
@@ -438,7 +439,7 @@
 
 								<div class="pb-3 mb-3 border-bottom">
 									<span class="d-flex justify-content-between d-block desc">
-										<span>Is product on offer :</span>
+										<span>Is product on <strong>offer</strong> :</span>
 										<span class="fw-bold" [ngClass]="!product.onOffer ? 'text-muted' : 'red-text'">
 											{{product.onOffer ? 'YES' : 'NO'}}
 										</span>
@@ -452,7 +453,7 @@
 
 								<div class="pb-3 mb-3">
 									<span class="d-flex justify-content-between desc">
-										<span>Is product currently available :</span>
+										<span>Is product currently <strong>available</strong> :</span>
 										<span class="fw-bold" [ngClass]="product.available ? 'text-muted' : 'red-text'">
 											{{product.available ? 'YES' : 'NO'}}
 										</span>
@@ -469,6 +470,10 @@
 						</div>
 					</div>
 				</ng-container>
+			</div>
+
+			<div class="modal-footer">
+				<button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Close</button>
 			</div>
 		</div>
 	</div>
