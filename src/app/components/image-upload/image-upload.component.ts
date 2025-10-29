@@ -119,8 +119,6 @@ export class ImageUploadComponent implements OnChanges {
   }
 
   removeFileFromList(index: number,duplicate:boolean = false): void {
-    console.log(duplicate);
-    
     if(!duplicate) this.checkForMoreDuplicates(this.entityImages[index]);
     
     setTimeout(() => {
