@@ -75,27 +75,31 @@ export class ReportDetailComponent implements OnChanges {
       {
         title: 'Recommended fix', value: this.report.fix ?? '—'
       },
+      {},
       {
-        title: 'Estimated repair cost', value: this.report?.repairCurrency + ' ' + (this.reportsService.formatCurrency(this.report.repairAmount) ?? 0)
+        title: 'Estimated repair cost', value: this.report?.currency + ' ' + (this.reportsService.formatCurrency(this.report.amount) ?? 0)
       },
       {
         title: 'Estimated repair time', value: this.report.repairTime + " " + this.report.repairTimeUnit
       },
       {
         title: 'Customer approval', value: this.report.customerApproval
-      }
+      },
+      {
+        title: 'Repair attempt fee', value: this.report?.repairCurrency + ' ' + (this.reportsService.formatCurrency(this.report.repairAmount) ?? 0)
+      },
     )
 
     if (!this.isCreate) {
       this.details.push(
         {
+          title: 'Created by',
+          value: this.report.createdBy ?? '—'
+        },
+        {
           title: 'Created on',
           value: this.report.createdOn ?? null,
           unformarttedDate: true
-        },
-        {
-          title: 'Created by',
-          value: this.report.createdBy ?? '—'
         }
       )
     }
