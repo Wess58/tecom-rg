@@ -23,7 +23,7 @@ export class GenerateReportService {
 
 
 
-  generateReport(reportData: any, selectedFiles: any[] = [], isRedownload: boolean = false): any {
+  generateReport(reportData: any, selectedFiles: any[] = [], isRedownload: boolean = false, user?:any): any {
 
     // localStorage.setItem('rptjson', JSON.stringify(reportData?));
 
@@ -73,7 +73,7 @@ export class GenerateReportService {
       doc.setTextColor('#5f6063');
       doc.text('REPORT BY', 5, 28, { align: 'left' });
 
-      const tech = JSON.parse(localStorage.getItem('tcmuser') || '{}');
+      const tech = isRedownload && user ? user : JSON.parse(localStorage.getItem('tcmuser') || '{}');
       // this.technicians.find((tech: any) => +reportData?.tech === tech?.id);
       // console.log(tech);
       doc.setTextColor('#3c4043');

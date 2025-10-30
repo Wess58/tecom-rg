@@ -5,6 +5,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ToastService } from '../../../services/toast.service';
 import { ReportsService } from '../../../services/reports.service';
 import { GenerateReportService } from '../../../services/generate-report.service';
+import { UsersService } from '../../../services/users.service';
+import { map } from 'rxjs';
 
 
 @Component({
@@ -41,13 +43,16 @@ export class ReportsListComponent implements OnInit {
   itemsPerPage = 20;
   totalLength: any;
 
+  reportCreator: any = {};
+
 
   constructor(
     public router: Router,
     private activatedRoute: ActivatedRoute,
     private toastService: ToastService,
     private reportsService: ReportsService,
-    private generateReportService: GenerateReportService
+    private generateReportService: GenerateReportService,
+    private usersService: UsersService
 
   ) { }
 
@@ -121,12 +126,12 @@ export class ReportsListComponent implements OnInit {
   }
 
   selectReport(report: any, action: string): void {
-    
+
     this.action = action;
     this.report = Object.assign({}, report?.reportData);
 
     if (action == 'DELETE') this.report.id = report.id;
-    
+
     this.report.createdBy = report.createdBy;
     this.report.createdOn = report.createdOn;
 
@@ -161,16 +166,44 @@ export class ReportsListComponent implements OnInit {
   }
 
 
-  generateReport(report: any): void {
+  async generateReport(report: any): Promise<void> {
 
     this.toastService.info('Generating report ...');
+    let user = JSON.parse(localStorage.getItem('tcmuser') || '{}');
 
+    if (report.createdBy !== user.email) {
+      this.getUser(report.createdBy,report);
+    } else {
+      this.generate(report);
+    }
+  }
+
+  generate(report: any,user?:any): void {
     const selectedFiles: any[] = [];
 
     setTimeout(() => {
-      this.generateReportService.generateReport(report, selectedFiles, true);
+      this.generateReportService.generateReport(report?.reportData, selectedFiles, true, user);
     }, 1500);
+  }
 
+
+  getUser(email: string,report:any): any {
+
+    const options = {
+      email,
+      pageSize: 1,
+      pageNo: 0,
+      sort: 'id,desc',
+    }
+
+    this.usersService.getUsers(options).subscribe(
+      {
+        next: (res: any) => {
+          this.generate(report, res.body[0]);
+
+        }
+      }
+    )
   }
 
   deleteReport(): void {
